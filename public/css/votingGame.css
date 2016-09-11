@@ -1,0 +1,56 @@
+div#container {
+    max-width: 67%;
+    text-align: justify;
+    font-size: 120%;
+    margin: 0 auto;
+}
+.modal-content{
+    max-width: 90%;
+}
+.modal-body{
+    font-size: 80%;
+}
+.b{
+    font-size: 100%;
+}
+.important {
+    color: red;
+    font-weight: bold;
+}
+
+.question {
+    font-weight: bold;
+}
+
+.button_div {
+    margin-right: 10px;
+}
+
+.info_table td, .info_table th  {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.info_table th {
+    min-width: 100px;
+}
+
+td.nums {
+    text-align: right;
+}
+.info_table {
+    border-collapse: collapse;
+}
+
+#yourinfo {
+    margin: 10px;
+}
+
+#yourinfo span {
+    font-weight: bold;
+}
+
+#decision_box {
+    border: solid 1px;
+    padding: 3%;
+}

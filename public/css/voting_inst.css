@@ -1,0 +1,13 @@
+.example {
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px;
+    width: 90%;
+}
+
+.outcome {
+    margin: 3%;
+    padding: 3%;
+    width: 94%;
+    background-color: #f5f5f5;
+}

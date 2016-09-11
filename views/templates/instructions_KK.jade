@@ -1,0 +1,11 @@
+extends iframe-layout
+
+block mainContent
+    div(id='container')
+        h1=instructions
+        h2=please
+        div(id='instructions') 
+            !=thisGame
+            br
+            br
+            =ifYouUnderstood

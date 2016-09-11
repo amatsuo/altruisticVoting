@@ -1,0 +1,23 @@
+extends iframe-layout
+
+block mainContent
+    div(id='container')
+        h1=instructions
+        h2=please
+        div(id='instructions') 
+            !=thisExperiment
+            br
+            br
+            !=thisExperiment2
+            br
+            br
+            !=thisExperiment3
+            br
+            br
+            !=theGroups
+            br
+            br
+            !=thePayment
+            div(style="text-align:center;padding: 20px;")="<em>"+theRate+"</em>"
+            br
+            =ifYouUnderstood

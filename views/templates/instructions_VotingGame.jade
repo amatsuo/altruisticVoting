@@ -1,0 +1,47 @@
+extends iframe-layout
+
+block extraHead
+    link(rel='stylesheet', type='text/css', href='/altruisticVoting/css/voting_inst.css')
+
+block mainContent
+    div(id='container')
+        h1=instructions
+        h2=please
+        div(id='instructions') 
+            !=thisGame
+            br
+            br
+            !=thisGame2
+            br
+            br
+            !=thisGame3
+            ul
+                !=information
+            br
+            !=decisions
+            br
+            br
+            !=election
+            br
+            div.example!=example1
+                ul
+                    li High income: 120 tokens
+                    li Low income: 60 tokens
+                =ex1_text1
+                br
+                br
+                div.outcome!=ex1_outcome1
+                div.outcome!=ex1_outcome2
+            div.example!=example2
+                ul
+                    li High income: 150 tokens
+                    li Low income: 70 tokens
+                =ex2_text1
+                br
+                br
+                div.outcome!=ex2_outcome1
+                div.outcome!=ex2_outcome2
+            !=endOfRound
+            br
+            br
+            =ifYouUnderstood

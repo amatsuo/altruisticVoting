@@ -1,0 +1,36 @@
+extends iframe-layout
+
+block extraHead
+    link(rel='stylesheet', type='text/css', href='/altruisticVoting/css/kk.css')
+
+
+block mainContent
+    div(id='container')
+        h1=roundTitle
+        p=text
+        div(id='choice')
+            table 
+                each round in [1, 2, 3, 4, 5]
+                    tr
+                        td(colspan=2, style='text-align: center')
+                            h2.pair_title="Pair " + round
+                        
+
+                    tr
+                        td.ptitle 
+                            h3 A
+                        td.ptitle 
+                            h3 B
+                    tr 
+                        td(align='center') 
+                            img(src="img/"+round+"A.jpg", class="paint_view")
+
+                        td(align='center') 
+                            img(src="img/"+round+"B.jpg", class="paint_view")
+                    tr
+                        td(align='center')
+                            input.choice(type="radio", name="choice"+round, value=choice[round-1][0]) 
+                        td(align='center')
+                            input.choice(type="radio", name="choice"+round, value=choice[round-1][1]) 
+            #button(style='padding-top: 20px')
+                input(type='button', id='read', value=proceed, class='btn btn-lg btn-primary')

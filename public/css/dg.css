@@ -1,0 +1,23 @@
+div#container {
+    max-width: 67%;
+    font-size: 200%;
+    text-align: justify;
+    margin: 0 auto;
+}
+.modal-content{
+    max-width: 90%;
+}
+.modal-body{
+    font-size: 80%;
+}
+.b{
+    font-size: 100%;
+}
+.important {
+    color: red;
+    font-weight: bold;
+}
+
+.question {
+    font-weight: bold;
+}

@@ -1,0 +1,53 @@
+extends iframe-layout
+
+link(rel='stylesheet', href='/altruisticVoting/css/bootstrap.min.css')
+link(rel='stylesheet', type='text/css', href='/altruisticVoting/css/dg.css')
+//link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css')
+
+
+block mainContent
+   //.alert.alert-dismissable.alert-danger
+      button.close( type="button", data-dismiss="alert" ) ×
+      | Danger Will Robinson!
+
+
+   div(id='container')
+      h1=Module
+      div(id='dictGame')
+         br
+         br
+         table(id='table 1')
+            tr
+               !=text1
+               br
+               br
+               !=textRecipient
+               br
+               br
+               =text2
+
+            tr
+               td &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  input(   type= "number", min= "0",max= num_tokens,id= "Send")
+               td &nbsp;
+               td
+                   =text3
+
+         br
+         input(type='button', id='read', value=proceed, class='btn btn-lg btn-primary')
+
+         .modal(id='ERROR')
+            .modal-dialog.modal-lg
+               .modal-content(style=".modal-content")
+                  .modal-header
+
+                     button(type="button", class="close", data-dismiss="modal",aria-label="Close",)
+                        span(aria-hidden="true") &times;
+
+                  .modal-body(style=".modal-body")
+                        =error
+
+                  .modal-footer
+                     button(type="button", class="btn btn-primary", data-dismiss="modal")=errorClose
+
+
