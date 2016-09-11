@@ -29,8 +29,10 @@ block mainContent
                             img(src="img/"+round+"B.jpg", class="paint_view")
                     tr
                         td(align='center')
-                            input.choice(type="radio", name="choice"+round, value=choice[round-1][0]) 
+                            input.choice(type="radio", name="choice"+round, id="choiceA"+round, value=choice[round-1][0]) 
                         td(align='center')
-                            input.choice(type="radio", name="choice"+round, value=choice[round-1][1]) 
+                            input.choice(type="radio", name="choice"+round, id="choiceB"+round, value=choice[round-1][1]) 
             #button(style='padding-top: 20px')
-                input(type='button', id='read', value=proceed, class='btn btn-lg btn-primary')
+                input(type='button', id='SendChoice', value=proceed, class='btn btn-lg btn-primary')
+            #dialog(title="Error")=errorMessage
+            

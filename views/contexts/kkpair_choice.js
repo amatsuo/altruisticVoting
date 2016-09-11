@@ -7,6 +7,9 @@ module.exports = function(settings, headers) {
         text: "Please choose which painting you prefer by clicking on either A or B from each pair of paintings. After everyone submits answers, you will be informed of which group you are in.",
         roundTitle: "Painting Choice ",
         proceed: "Submit",
+        errorMessage:"Please answer all questions",
+        errorClose: "Close",
+
         //round: round,
         choice: c
     };

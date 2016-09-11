@@ -12,7 +12,8 @@ module.exports = {
     selectLanguage: selectLanguage,
     bidder: bidder,
     respondent: respondent,
-    endgame: endgame
+    endgame: endgame,
+    kkpair_choice: kkpair_choice,
 };
 
 function init() {
@@ -264,6 +265,42 @@ function precache() {
 function selectLanguage() {
     node.game.lang = node.widgets.append('LanguageSelector',
                                          W.getFrameDocument().body);
+}
+
+function kkpair_choice(){
+    W.loadFrame('kkpair_choice.html',function(){
+        var i=1;
+        var b=W.getElementById('SendChoice');
+        b.onclick=function(){
+            var arrayAnswers=[];
+            var checkall = 0;
+            for(var i=1;i<=1;i++){
+                var author, checked;
+                checked = 0;
+                if(W.getElementById('choiceA'+i).checked){
+                    checked = 1;
+                } else if (W.getElementById('answerB'+i).checked){
+                    checked = 1;
+                }
+                checkall += checked;
+            }
+            if(checkall < 5){
+                console.log("Not answer all");
+                var modal = W.getElementById("ERROR");
+                $(modal).modal();
+                $('.modal-backdrop').remove();
+                //console.log(arrayAnswers);
+            }else{
+                node.done({
+//                    module:'Module4',
+//                    arrayAnswers:arrayAnswers
+                });
+//                node.game.answersModule4=arrayAnswers;
+                //console.log(arrayAnswers);
+            }
+
+        }
+    });
 }
 
 function bidder() {

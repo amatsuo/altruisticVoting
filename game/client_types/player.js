@@ -20,7 +20,11 @@ var publishLevels = constants.publishLevels;
 
 module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
-    var game;
+    var game, cbs;
+    
+    // Import other functions used in the game.
+    cbs = require(__dirname + '/includes/player.callbacks.js');
+
 
     stager.setOnInit(function() {
 
@@ -64,7 +68,51 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('kkpair_choice', {
         donebutton: false,
-        frame: 'kkpair_choice.html'
+        frame: 'kkpair_choice.html',
+        cb: function() {
+            
+            var i=1;
+            var b=W.getElementById('SendChoice');
+            
+            b.onclick=function(){
+                var arrayAnswers=[];
+                var checkall = 0;
+                var score = 0;
+                for(var i=1;i<=5;i++){
+                    var author, checked;
+                    checked = 0;
+                    if(W.getElementById('choiceA'+i).checked){
+                        checked = 1;
+                        score += (W.getElementById('choiceA'+i).value == "KL") ? 1:0;
+                    } else if (W.getElementById('choiceB'+i).checked){
+                        checked = 1;
+                        score += (W.getElementById('choiceB'+i).value == "KL") ? 1:0;
+                    }
+                    checkall += checked;
+                }
+                score += Math.random();
+                console.log("Score: " + score);
+                console.log(checkall);
+                if(checkall < 5){
+                    console.log("Not answer all");
+                    var dialog = W.getElementById("dialog");
+                    //$(dialog).dialog();
+                    //var modal = W.getElementById("ERROR");
+                    //$(modal).modal();
+                    //$('.modal-backdrop').remove();
+                    //console.log(arrayAnswers);
+                }else{
+                    node.done({
+                        score: score,
+    //                    arrayAnswers:arrayAnswers
+                    });
+    //                node.game.answersModule4=arrayAnswers;
+                    //console.log(arrayAnswers);
+                }
+
+            }
+        },
+        
     });
 
     stager.extendStep('kk_result', {
