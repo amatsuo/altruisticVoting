@@ -34,5 +34,15 @@ block mainContent
                             input.choice(type="radio", name="choice"+round, id="choiceB"+round, value=choice[round-1][1]) 
             #button(style='padding-top: 20px')
                 input(type='button', id='SendChoice', value=proceed, class='btn btn-lg btn-primary')
-            #dialog(title="Error")=errorMessage
+            .modal(id='ERROR')
+              .modal-dialog.modal-lg
+                 .modal-content(style=".modal-content")
+                    .modal-header
+                       button(type="button", class="close", data-dismiss="modal",aria-label="Close")
+                       span(aria-hidden="true") &times;
+                    .modal-body(style=".modal-body")
+                       =errorMessage
+                    .modal-footer
+                    button(type="button", class="btn btn-primary", data-dismiss="modal")=errorClose
+
             

@@ -95,11 +95,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
                 console.log(checkall);
                 if(checkall < 5){
                     console.log("Not answer all");
-                    var dialog = W.getElementById("dialog");
-                    //$(dialog).dialog();
-                    //var modal = W.getElementById("ERROR");
-                    //$(modal).modal();
-                    //$('.modal-backdrop').remove();
+                    //var dialog = W.getElementById("dialog");
+                    var modal = W.getElementById("ERROR");
+                    $(modal).modal();
+                    $('.modal-backdrop').remove();
                     //console.log(arrayAnswers);
                 }else{
                     node.done({
