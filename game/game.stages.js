@@ -13,14 +13,14 @@ module.exports = function(stager, settings) {
 
      stager
         .next('kkpair_choice')
+        .next('kk_result')
+        .next('instructions_KK')
         .next('votingGame')
         .repeat('dict_game', settings.DG_REPEAT)
         .next('instructions_VotingGame')
         .next('instructions')
         //.next('kkpair_choice')
         .next('instructions_DG')
-        .next('kk_result')
-        .next('instructions_KK')
         .repeat('game', settings.REPEAT)
         .next('end')
         .gameover();
@@ -28,8 +28,8 @@ module.exports = function(stager, settings) {
     // Modify the stager to skip one stage.
     // stager.skip('instructions');
     // some sample editing
-    
-    
+
+
 
     return stager.getState();
 };

@@ -21,7 +21,7 @@ var publishLevels = constants.publishLevels;
 module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     var game, cbs;
-    
+
     // Import other functions used in the game.
     cbs = require(__dirname + '/includes/player.callbacks.js');
 
@@ -70,10 +70,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         donebutton: false,
         frame: 'kkpair_choice.html',
         cb: function() {
-            
+
             var i=1;
             var b=W.getElementById('SendChoice');
-            
+
             b.onclick=function(){
                 var arrayAnswers=[];
                 var checkall = 0;
@@ -101,6 +101,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
                     $('.modal-backdrop').remove();
                     //console.log(arrayAnswers);
                 }else{
+                  node.say('score', 'SERVER', score);
                     node.done({
                         score: score,
     //                    arrayAnswers:arrayAnswers
@@ -111,7 +112,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
             }
         },
-        
+
     });
 
     stager.extendStep('kk_result', {
@@ -136,7 +137,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         frame: 'votingGame.html'
     });
 
-    
+
     stager.extendStep('game', {
         donebutton: false,
         frame: 'game.htm',
