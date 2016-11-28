@@ -116,7 +116,18 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('kk_result', {
-        frame: 'kk_result.html'
+      frame: 'kk_result.html',
+      cb: function() {
+        node.on.data('group', function(msg) {
+          // Make the dictator display visible.
+          W.setInnerHTML('group', msg.data);
+          W.setInnerHTML('group2', msg.data);
+          W.setInnerHTML('group3', msg.data);
+          W.setInnerHTML('groupSize', node.game.settings.GROUP_SIZE);
+          
+          node.game.mygroup = msg.data;
+        });
+      }
     });
 
     stager.extendStep('instructions_DG', {

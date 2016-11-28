@@ -29,7 +29,7 @@ module.exports = {
      * spawn game room. The session id is saved in each entry in the
      * memory database of the logics, and used as the name of the
      * session folder in the data/ directory.
-     */ 
+     */
     SESSION_ID: 1,
 
     /**
@@ -49,6 +49,9 @@ module.exports = {
     // Numnber of game rounds repetitions.
     REPEAT: 4,
     DG_REPEAT: 3,
+
+    // Number of participants in each group
+    GROUP_SIZE: 9,
 
     // # Treatments definition.
 
