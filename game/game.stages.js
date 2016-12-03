@@ -11,25 +11,32 @@
 
 module.exports = function(stager, settings) {
 
-     stager
-        .next('kkpair_choice')
-        .next('kk_result')
-        .next('instructions_KK')
-        .next('votingGame')
-        .repeat('dict_game', settings.DG_REPEAT)
-        .next('instructions_VotingGame')
-        .next('instructions')
-        //.next('kkpair_choice')
-        .next('instructions_DG')
-        .repeat('game', settings.REPEAT)
-        .next('end')
-        .gameover();
+  stager
+    .next('number_addition_result')
+    .next('kkpair_choice')
+    .next('kk_result');
+  stager
+    .next('number_addition_game');
 
-    // Modify the stager to skip one stage.
-    // stager.skip('instructions');
-    // some sample editing
+  stager
+    .next('instructions_KK')
+    .next('votingGame');
+  stager
+    .repeatStage('dict_game', settings.DG_REPEAT);
+  stager
+    .next('instructions_VotingGame')
+    .next('instructions')
+    //.next('kkpair_choice')
+    .next('instructions_DG')
+    .repeat('game', settings.REPEAT)
+    .next('end')
+    .gameover();
+
+  // Modify the stager to skip one stage.
+  // stager.skip('instructions');
+  // some sample editing
 
 
 
-    return stager.getState();
+  return stager.getState();
 };

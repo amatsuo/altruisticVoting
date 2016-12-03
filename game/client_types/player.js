@@ -124,10 +124,75 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           W.setInnerHTML('group2', msg.data);
           W.setInnerHTML('group3', msg.data);
           W.setInnerHTML('groupSize', node.game.settings.GROUP_SIZE);
-          
+
           node.game.mygroup = msg.data;
         });
       }
+    });
+
+    stager.extendStep('number_addition_game', {
+      frame: 'number_addition_game.html',
+      cb: function() {
+        var num1, num2;
+        // show initial set of numbers
+        num1 = Math.floor(Math.random()*(99-10)+10);
+        num2 = Math.floor(Math.random()*(99-10)+10);
+        W.setInnerHTML('num1', num1);
+        W.setInnerHTML('num2', num2);
+
+        //display group name
+        W.setInnerHTML('group', node.game.mygroup);
+
+        var b = W.getElementById('read');
+        node.game.correct = 0;
+
+        node.on.data('tokens_update', function(msg) {
+          W.setInnerHTML('totalMyGroup', msg.data);
+        });
+
+        b.onclick = function() {
+          /*var num1 = parseInt($(W.getElementById('num1')).text());
+          var num2 = parseInt($(W.getElementById('num2')).text());*/
+          W.getElementById('container').style.display = 'none';
+          var resultint = W.getElementById('result').value;
+          var result = JSUS.isInt(resultint,0,200);
+          var success = (resultint == num1+num2);
+
+          W.getElementById('result').value = "";
+          num1 = Math.floor(Math.random()*(99-10)+10);
+          num2 = Math.floor(Math.random()*(99-10)+10);
+
+          W.setInnerHTML('num1', num1);
+          W.setInnerHTML('num2', num2);
+
+          if(result === false){
+            console.log("validación Modal error");
+          }
+          else{
+            if(success){
+              W.getElementById('alertSucces').style.display = 'block';
+              W.getElementById('alertDanger').style.display = 'none';
+              node.game.correct++;
+              node.say('correct', 'SERVER', node.game.correct);
+            }
+            else{
+              W.getElementById('alertDanger').style.display = 'block';
+              W.getElementById('alertSucces').style.display = 'none';
+            }
+            W.getElementById('myTokens').innerHTML = node.game.correct;
+            //node.done();
+
+          }
+          setTimeout(function() {
+            W.getElementById('container').style.display = 'block';
+          }, 100);
+
+        };
+
+      }
+    });
+    stager.extendStep('number_addition_result', {
+        frame: 'number_addition_results.html'
     });
 
     stager.extendStep('instructions_DG', {

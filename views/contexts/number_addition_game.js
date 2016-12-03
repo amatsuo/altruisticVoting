@@ -4,10 +4,10 @@ module.exports = function(settings, headers) {
     return {
         title: "Module",
         Module: "Module ",
-        myTokensText: "Number of tokens you have contributed: ",
-        groupPokensText: "Number of tokens other members have contributed: ",
-        num1: Math.floor(Math.random()*(99-10)+10),
-        num2: Math.floor(Math.random()*(99-10)+10),
+        groupTokensText: "Total tokens of your <b id='group'>&nbsp;</b> group: ",
+        myTokensText: "Tokens you have contributed: ",
+        // num1: Math.floor(Math.random()*(99-10)+10), // the nubmers are supplied by cb:
+        // num2: Math.floor(Math.random()*(99-10)+10),
         linea:"__________",
         proceed: "Submit Answer",
         good: "Correct",

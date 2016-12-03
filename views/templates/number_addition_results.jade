@@ -1,0 +1,20 @@
+extends iframe-layout
+block mainContent
+  div(id='container')
+    h1=Module
+    style.
+      .risktab { padding: 10px; font-size:120%}
+    div#results In this round...
+    br
+    table(border='1px solid', width="50%", font-size="40%")
+      tr
+        td.risktab Your group (Klee)
+        td.risktab 
+          span#myGroupTokens 0
+      tr
+        td.risktab Other group (Kandinsky)
+        td.risktab 
+          span#otherGroupTokens 0
+    br
+    div#clickNext Click DONE when you finish reviewing the results
+//Created by Aki on 2016-12-3

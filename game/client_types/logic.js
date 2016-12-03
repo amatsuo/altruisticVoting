@@ -74,7 +74,27 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       }
     },
     cb: function() {
-        console.log('kkpair choice.');
+      console.log('kkpair results.');
+    }
+  });
+
+
+  stager.extendStep('number_addition_game', {
+    cb: function() {
+      console.log('Number addition game.');
+      node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
+      node.on.data('correct', function(msg){
+        var cgroup = node.game.kkgroup[msg.from];
+        node.game.grouptokens[cgroup]++;
+        console.log(cgroup + node.game.grouptokens[cgroup]);
+        node.game.pl.each(function(p) {
+          var res_group = node.game.kkgroup[p.id];
+          //console.log("round_info: %o", messageData);
+          if(res_group == cgroup){
+            node.say('tokens_update', p.id, node.game.grouptokens[cgroup]);
+          }
+        });
+      });
     }
   });
 
