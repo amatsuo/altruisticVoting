@@ -98,6 +98,24 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     }
   });
 
+  stager.extendStep('number_addition_results', {
+    cb: function() {
+      console.log('Number addition results.');
+      //node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
+      node.game.pl.each(function(p) {
+        var res_group = node.game.kkgroup[p.id];
+        //console.log("round_info: %o", messageData);
+        var other_group = res_group == "Klee" ? "Kandinsky" : "Klee";
+
+        node.say('na_results', p.id,
+          [node.game.grouptokens[res_group],
+          node.game.grouptokens[other_group],
+          res_group,
+          other_group ]);
+      });
+    }
+  });
+
 
   stager.extendStep('instructions_DG', {
       cb: function() {

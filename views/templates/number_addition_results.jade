@@ -4,17 +4,22 @@ block mainContent
     h1=Module
     style.
       .risktab { padding: 10px; font-size:120%}
-    div#results In this round...
+      .container {font-size: 120%}
+    div#results In this round each group made...
     br
     table(border='1px solid', width="50%", font-size="40%")
       tr
-        td.risktab Your group (Klee)
+        td.risktab Your group 
+          span#myGroup (Klee)
         td.risktab 
           span#myGroupTokens 0
+          span  tokens
       tr
-        td.risktab Other group (Kandinsky)
+        td.risktab Other group 
+          span#otherGroup (Kandinsky)
         td.risktab 
           span#otherGroupTokens 0
+          span  tokens
     br
     div#clickNext Click DONE when you finish reviewing the results
 //Created by Aki on 2016-12-3

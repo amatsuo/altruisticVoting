@@ -191,8 +191,16 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
       }
     });
-    stager.extendStep('number_addition_result', {
-        frame: 'number_addition_results.html'
+    stager.extendStep('number_addition_results', {
+        frame: 'number_addition_results.html',
+        cb: function() {
+          node.on.data('na_results', function(msg) {
+            W.setInnerHTML('myGroupTokens', msg.data[0]);
+            W.setInnerHTML('otherGroupTokens', msg.data[1]);
+            W.setInnerHTML('myGroup', "(" + msg.data[2] + ")");
+            W.setInnerHTML('otherGroup', "(" + msg.data[3] + ")");
+          });
+        }
     });
 
     stager.extendStep('instructions_DG', {
