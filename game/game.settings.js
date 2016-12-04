@@ -47,11 +47,14 @@ module.exports = {
     // # Game specific properties
 
     // Numnber of game rounds repetitions.
-    REPEAT: 4,
-    DG_REPEAT: 3,
+    VG_REPEAT: 4, // votingGame repeats
+    DG_REPEAT: 3, // dict_game repeats
+    PG_REPEAT: 3, // public_goods_game repeats
 
     // Number of participants in each group
     GROUP_SIZE: 9,
+
+    DG_TOKENS: 100,
 
     // # Treatments definition.
 

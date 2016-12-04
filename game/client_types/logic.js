@@ -82,6 +82,9 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('number_addition_game', {
     cb: function() {
       console.log('Number addition game.');
+      // var gs = this.getCurrentGameStage();
+      // console.log("gs: %o", gs);
+
       node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
       node.on.data('correct', function(msg){
         var cgroup = node.game.kkgroup[msg.from];
@@ -118,15 +121,44 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
 
   stager.extendStep('instructions_DG', {
-      cb: function() {
-          console.log('Instructions Dicataor Game.');
-      }
+    cb: function() {
+      console.log('Instructions Dicataor Game.');
+      var game_orders = ["Anonymous", "Peer", "Oppnent"];
+      //game_orders = shuffle(game_orders);
+      node.game.dg_orders = game_orders;
+      node.game.dg_payround = parseInt(Math.random() * 3 + 1);
+      console.log(game_orders);
+    }
   });
 
   stager.extendStep('dict_game', {
-      cb: function() {
-          console.log('dictator game');
+    cb: function() {
+      var current = this.getCurrentGameStage();
+      console.log('dictator game round', current.round);
+      //console.log(current.round);
+      var game_type = node.game.dg_orders[current.round - 1];
+      if(game_type == "Anonymous"){
+        var g, i, playerA, playerB;
+        g = node.game.pl.shuffle();
+        for(i = 0;i < node.game.pl.size(); i = i + 2){
+            playerA = g.db[i];
+            playerB = g.db[i + 1];
+            node.say('your_pair' , playerA.id, playerB.id);
+            node.say('your_pair' , playerB.id, playerA.id);
+        }
       }
+      var klees = [];
+      var kandinskys = [];
+
+      // if(game_type == "Peer"){
+      //   for(i = 0;i < node.game.pl.size(); i = i + 2){
+      //       playerA = g.db[i];
+      //       playerB = g.db[i + 1];
+      //       node.say('your_pair' , playerA.id, playerB.id);
+      //       node.say('your_pair' , playerB.id, playerA.id);
+      //   }
+      // }
+    }
   });
 
 
@@ -179,4 +211,24 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       node.say('ROLE_DICTATOR', players[0], players[1]);
       node.say('ROLE_OBSERVER', players[1]);
   }
+
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
 };

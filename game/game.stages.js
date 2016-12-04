@@ -11,6 +11,9 @@
 
 module.exports = function(stager, settings) {
 
+  stager.next('instructions_DG');
+  stager.repeatStage('dict_games', settings.DG_REPEAT);
+  stager.step("dict_game");
   stager
     .next('kkpair_choice')
     .next('kk_result');
@@ -22,13 +25,10 @@ module.exports = function(stager, settings) {
     .next('instructions_KK')
     .next('votingGame');
   stager
-    .repeatStage('dict_game', settings.DG_REPEAT);
-  stager
     .next('instructions_VotingGame')
     .next('instructions')
     //.next('kkpair_choice')
-    .next('instructions_DG')
-    .repeat('game', settings.REPEAT)
+    .repeat('game', settings.VG_REPEAT)
     .next('end')
     .gameover();
 
