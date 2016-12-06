@@ -219,10 +219,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           "Other" : 'The only thing you know about this individual is that he or she is a member of <strong>' +
            otherGroup + " group</strong>."
         };
+        var recipient;
 
         node.on.data('recipient', function(msg) {
           var recp_text = recipient_msgs[msg.data[1]];
-          var recipient = msg.data[0];
+          recipient = msg.data[0];
           // // Make the dictator display visible.
           W.setInnerHTML('recipient', recp_text);
           // W.setInnerHTML('group2', msg.data);
@@ -231,6 +232,39 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           //
           // node.game.mygroup = msg.data;
         });
+
+        var b = W.getElementById('read');
+
+        b.onclick = function() {
+          var valueR=0;
+          var send = W.getElementById('Send');
+          var valueS = send.value;
+          valueS = JSUS.isInt(valueS, 0, node.game.settings.CANTIDAD);
+
+          if ( valueS === false ) {
+            var modal = W.getElementById("ERROR");
+            $(modal).modal();
+            $('.modal-backdrop').remove();
+          }
+          else {
+            send.disabled = true;
+            b.disabled = true;
+            W.writeln(' Waiting for the decision of other players',
+                      W.getElementById('dictGame'));
+            node.say('send', recipient, valueS);
+            node.on.data('send', function(msg){
+              valueR = msg.data;
+              node.done({
+                value: 100 - valueS + valueR ,
+                sent_value: valueS,
+                received_value: valueR,
+                recipient: recipient,
+                module: 'Module3'
+              });
+              node.say('send', recipient, valueS);
+            });
+          }
+        };
 
       }
     });
