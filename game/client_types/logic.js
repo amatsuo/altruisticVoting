@@ -53,6 +53,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.kkscore.push([msg.from, msg.data]);
         console.log(node.game.kkscore[node.game.kkscore.length - 1]);
       });
+
       console.log('kkpair choice.');
     }
   });
