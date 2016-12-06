@@ -11,12 +11,12 @@
 
 module.exports = function(stager, settings) {
 
-  stager.next('instructions_DG');
-  stager.repeatStage('dict_games', settings.DG_REPEAT);
-  stager.step("dict_game");
   stager
     .next('kkpair_choice')
     .next('kk_result');
+  stager.next('instructions_DG');
+  stager.repeatStage('dict_games', settings.DG_REPEAT);
+  stager.step("dict_game");
   stager.repeatStage("public_goods_game", 3);
   stager.step('number_addition_game')
   stager.step('number_addition_results');

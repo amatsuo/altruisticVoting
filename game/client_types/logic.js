@@ -123,7 +123,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('instructions_DG', {
     cb: function() {
       console.log('Instructions Dicataor Game.');
-      var game_orders = ["Anonymous", "Peer", "Oppnent"];
+      var game_orders = ["Other", "Anonymous", "Peer"];
       //game_orders = shuffle(game_orders);
       node.game.dg_orders = game_orders;
       node.game.dg_payround = parseInt(Math.random() * 3 + 1);
@@ -134,30 +134,69 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('dict_game', {
     cb: function() {
       var current = this.getCurrentGameStage();
-      console.log('dictator game round', current.round);
       //console.log(current.round);
       var game_type = node.game.dg_orders[current.round - 1];
+      console.log('dictator game round', current.round);
+      console.log('dictator game type', game_type);
+      var playerA, playerB;
       if(game_type == "Anonymous"){
-        var g, i, playerA, playerB;
+        var g, i;
         g = node.game.pl.shuffle();
         for(i = 0;i < node.game.pl.size(); i = i + 2){
-            playerA = g.db[i];
-            playerB = g.db[i + 1];
-            node.say('your_pair' , playerA.id, playerB.id);
-            node.say('your_pair' , playerB.id, playerA.id);
+            playerA = g.db[i].id;
+            playerB = g.db[i + 1].id;
+            node.say('recipient' , playerA, [playerB, game_type]);
+            node.say('recipient' , playerB, [playerA, game_type]);
         }
       }
-      var klees = [];
-      var kandinskys = [];
+      var members = { Klee : [],
+        Kandinsky: []};
+      var id;
+      for (id in node.game.kkgroup) {
+        if (node.game.kkgroup[id] == 'Klee') {
+          members.Klee.push(id);
+        } else {
+          members.Kandinsky.push(id);
+        }
+      }
+      console.log("Klee", members.Klee);
+      console.log("Kandinsky", members.Kandinsky);
+      if(game_type == "Peer"){
+        var gr_text;
+        for (gr_text in members) {
+          var cgroup = members[gr_text];
+          cgroup = shuffle(cgroup);
+          var i;
+          for (i = 0; i < cgroup.length; i = i + 2) {
 
-      // if(game_type == "Peer"){
-      //   for(i = 0;i < node.game.pl.size(); i = i + 2){
-      //       playerA = g.db[i];
-      //       playerB = g.db[i + 1];
-      //       node.say('your_pair' , playerA.id, playerB.id);
-      //       node.say('your_pair' , playerB.id, playerA.id);
-      //   }
-      // }
+            var j = (i + 1) % cgroup.length;
+            console.log(i, j);
+            playerA = cgroup[i];
+            playerB = cgroup[j];
+            console.log(playerA, playerB);
+            node.say('recipient' , playerA, [playerB, game_type]);
+            node.say('recipient' , playerB, [playerA, game_type]);
+          }
+        }
+      }
+      if(game_type == "Other"){
+        var max_idx = Math.max(members.Klee.length, members.Kandinsky.length);
+        var i;
+        for (i = 0; i < max_idx; i++) {
+          members.Klee = shuffle(members.Klee);
+          members.Kandinsky = shuffle(members.Kandinsky);
+
+          var i_kl , i_kn;
+          i_kl = i % members.Klee.length;
+          i_kn = i % members.Kandinsky.length;
+          playerA = members.Klee[i_kl];
+          playerB = members.Kandinsky[i_kn];
+          console.log(playerA, playerB);
+
+          node.say('recipient' , playerA, [playerB, game_type]);
+          node.say('recipient' , playerB, [playerA, game_type]);
+        }
+      }
     }
   });
 

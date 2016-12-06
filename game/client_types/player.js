@@ -208,8 +208,31 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('dict_game', {
-        donebutton: false,
-        frame: 'dict_game.html'
+      //donebutton: false,
+      frame: 'dict_game.html',
+      cb: function() {
+        var otherGroup = node.game.mygroup == "Klee" ? "Kandinsky" : "Klee";
+        var recipient_msgs = {
+          "Anonymous" : 'You know nothing about this anonymous individual.',
+          "Peer" : 'The only thing you know about this individual is that he or she is a member of your <strong>' +
+           node.game.mygroup + " group</strong>.",
+          "Other" : 'The only thing you know about this individual is that he or she is a member of <strong>' +
+           otherGroup + " group</strong>."
+        };
+
+        node.on.data('recipient', function(msg) {
+          var recp_text = recipient_msgs[msg.data[1]];
+          var recipient = msg.data[0];
+          // // Make the dictator display visible.
+          W.setInnerHTML('recipient', recp_text);
+          // W.setInnerHTML('group2', msg.data);
+          // W.setInnerHTML('group3', msg.data);
+          // W.setInnerHTML('groupSize', node.game.settings.GROUP_SIZE);
+          //
+          // node.game.mygroup = msg.data;
+        });
+
+      }
     });
 
     stager.extendStep('instructions_VotingGame', {
