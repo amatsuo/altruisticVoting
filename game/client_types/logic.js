@@ -214,12 +214,19 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       }
   });
 
-  stager.extendStep('game', {
+
+  stager.extendStep('votingResult', {
       cb: function() {
-          console.log('Game round: ' + node.player.stage.round);
-          doMatch();
+          console.log('votingResult');
       }
   });
+
+  // stager.extendStep('game', {
+  //     cb: function() {
+  //         console.log('Game round: ' + node.player.stage.round);
+  //         doMatch();
+  //     }
+  // });
 
   stager.extendStep('end', {
       cb: function() {

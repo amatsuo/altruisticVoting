@@ -208,7 +208,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('dict_game', {
-      //donebutton: false,
+      donebutton: false,
       frame: 'dict_game.html',
       cb: function() {
         var otherGroup = node.game.mygroup == "Klee" ? "Kandinsky" : "Klee";
@@ -274,83 +274,88 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('votingGame', {
-        donebutton: false,
+        //donebutton: false,
         frame: 'votingGame.html'
     });
 
-
-    stager.extendStep('game', {
-        donebutton: false,
-        frame: 'game.htm',
-        cb: function() {
-
-            node.on.data('ROLE_DICTATOR', function(msg) {
-                var button, offer, div;
-
-                // Make the dictator display visible.
-                div = W.getElementById('dictator').style.display = '';
-                button = W.getElementById('submitOffer');
-                offer =  W.getElementById('offer');
-
-
-                // Setup the timer.
-                node.game.visualTimer.init({
-                    milliseconds: node.game.settings.bidTime,
-                    timeup: function() {
-                        node.game.randomOffer(offer, button);
-                    }
-                });
-                node.game.visualTimer.updateDisplay();
-                node.game.visualTimer.startTiming();
-
-                // Listen on click event.
-                button.onclick = function() {
-                    var to, decision;
-                    // Validate offer.
-                    decision = node.game.isValidBid(offer.value);
-                    if ('number' !== typeof decision) {
-                        W.writeln('Please enter a number between ' +
-                                  '0 and 100.');
-                        return;
-                    }
-                    button.disabled = true;
-
-                    // The recipient of the offer.
-                    to = msg.data;
-
-                    // Send the decision to the other player.
-                    node.say('decision', to, decision);
-
-                    // Mark the end of the round, and
-                    // store the decision in the server.
-                    node.done({ offer: decision });
-                };
-            });
-
-            node.on.data('ROLE_OBSERVER', function(msg) {
-                var button, span, offer, div;
-
-                node.game.visualTimer.clear();
-                node.game.visualTimer.startWaiting({
-                    milliseconds: node.game.settings.bidTime,
-                    timeup: false
-                });
-
-                // Make the observer display visible.
-                div = W.getElementById('observer').style.display = '';
-                span = W.getElementById('dots');
-                W.addLoadingDots(span);
-
-                node.on.data('decision', function(msg) {
-                    W.setInnerHTML('decision',
-                                   'The dictator offered: ' +
-                                   msg.data + ' ECU.');
-
-                    node.timer.randomDone();
-                });
-            });
-        }
+    stager.extendStep('votingResult', {
+        //donebutton: false,
+        frame: 'votingResult.html'
     });
+
+
+    // stager.extendStep('game', {
+    //     donebutton: false,
+    //     frame: 'game.htm',
+    //     cb: function() {
+    //
+    //         node.on.data('ROLE_DICTATOR', function(msg) {
+    //             var button, offer, div;
+    //
+    //             // Make the dictator display visible.
+    //             div = W.getElementById('dictator').style.display = '';
+    //             button = W.getElementById('submitOffer');
+    //             offer =  W.getElementById('offer');
+    //
+    //
+    //             // Setup the timer.
+    //             node.game.visualTimer.init({
+    //                 milliseconds: node.game.settings.bidTime,
+    //                 timeup: function() {
+    //                     node.game.randomOffer(offer, button);
+    //                 }
+    //             });
+    //             node.game.visualTimer.updateDisplay();
+    //             node.game.visualTimer.startTiming();
+    //
+    //             // Listen on click event.
+    //             button.onclick = function() {
+    //                 var to, decision;
+    //                 // Validate offer.
+    //                 decision = node.game.isValidBid(offer.value);
+    //                 if ('number' !== typeof decision) {
+    //                     W.writeln('Please enter a number between ' +
+    //                               '0 and 100.');
+    //                     return;
+    //                 }
+    //                 button.disabled = true;
+    //
+    //                 // The recipient of the offer.
+    //                 to = msg.data;
+    //
+    //                 // Send the decision to the other player.
+    //                 node.say('decision', to, decision);
+    //
+    //                 // Mark the end of the round, and
+    //                 // store the decision in the server.
+    //                 node.done({ offer: decision });
+    //             };
+    //         });
+    //
+    //         node.on.data('ROLE_OBSERVER', function(msg) {
+    //             var button, span, offer, div;
+    //
+    //             node.game.visualTimer.clear();
+    //             node.game.visualTimer.startWaiting({
+    //                 milliseconds: node.game.settings.bidTime,
+    //                 timeup: false
+    //             });
+    //
+    //             // Make the observer display visible.
+    //             div = W.getElementById('observer').style.display = '';
+    //             span = W.getElementById('dots');
+    //             W.addLoadingDots(span);
+    //
+    //             node.on.data('decision', function(msg) {
+    //                 W.setInnerHTML('decision',
+    //                                'The dictator offered: ' +
+    //                                msg.data + ' ECU.');
+    //
+    //                 node.timer.randomDone();
+    //             });
+    //         });
+    //     }
+    // });
 
     stager.extendStep('end', {
         donebutton: false,

@@ -5,8 +5,8 @@ module.exports = function(settings, headers) {
     var E = 1000; //settings.pp.EXCHANGE_RATE_INSTRUCTIONS;
 
     return {
-        title: "INSTRUCTIONS: Module 3",
-        instructions: "Instructions of Module 3",
+        title: "INSTRUCTIONS: Module 4",
+        instructions: "Instructions of Module 4",
         please: "Please read them carefully",
         thisGame: "In this module, you will be asked to make several decisions. The decisions that you make will determine the payments that you, the members of your group, and the members of the second group will receive at the end of the experiment.",
         thisGame2: "<b>Incomes</b>: The experiment will include 30 rounds. At the beginning of each round, the computer will determine randomly generate the \"gross\" income of each participant in this round. There are two different amount incomes for participants: A \"High\" income and a \"Low\" income.",

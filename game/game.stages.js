@@ -11,7 +11,11 @@
 
 module.exports = function(stager, settings) {
 
+  stager.repeatStage('votingRound', settings.VG_REPEAT);
+  stager.step('votingGame');
+  stager.step('votingResult');
   stager
+    .next('instructions_VotingGame')
     .next('kkpair_choice')
     .next('kk_result');
   stager.next('instructions_DG');
@@ -23,12 +27,11 @@ module.exports = function(stager, settings) {
 
   stager
     .next('instructions_KK')
-    .next('votingGame');
+    .next('instructions');
+    // .repeat('game', settings.VG_REPEAT);
+
   stager
-    .next('instructions_VotingGame')
-    .next('instructions')
     //.next('kkpair_choice')
-    .repeat('game', settings.VG_REPEAT)
     .next('end')
     .gameover();
 

@@ -1,0 +1,60 @@
+extends iframe-layout
+
+block extraHead
+    link(rel='stylesheet', href='/altruisticVoting/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/altruisticVoting/css/votingGame.css')
+    //link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css')
+
+block mainContent
+  div(id='container')
+    h1 Module 4
+    div(id='gameContents')
+      h2 Result of this round
+      h3 Votes
+      table#votes.info_table
+        tr
+          th Action
+          th Count
+        tr
+          td Yes
+          td#yes_count
+        tr
+          td No
+          td#no_count
+        tr
+          td Abstained
+          td#abs_count
+      br
+      #outcome The tax proposal was passed
+      br  
+          
+
+      
+      h3 Earnings
+      table#earnings.info_table
+        tr
+          th &nbsp;
+          th Earnings (Voted)
+          th Earnings (Abstained)
+        tr
+          td High earners
+          td
+            span#high_amount_voted
+            span  tokens
+          td
+            span#high_amount_abstained
+            span  tokens
+        tr
+          td Low earners
+          td
+            span#low_amount_voted
+            span  tokens
+          td
+            span#low_amount_abstained
+            span  tokens
+        tr
+          td Your earnings
+          td
+            span#my_amount
+            span  tokens
+      
