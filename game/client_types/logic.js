@@ -211,6 +211,36 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('votingGame', {
       cb: function() {
           console.log('votingGame');
+          var high_lows = [[60, 140], [80, 120], [70, 130]];
+          var tax_proposals = [20, 10];
+          var c_high_low = shuffle(high_lows)[0];
+          var c_tax = shuffle(tax_proposals)[0];
+          console.log(c_high_low);
+          var hl = [0, 1];
+          var g_assignment = {};
+          g_assignment['Klee'] = [0, 0];
+          g_assignment['Kandinsky'] = [0, 0];
+          g_assignment['Total'] = [0, 0];
+          var hls = {};
+          var p;
+          for(p in node.game.kkgroup){
+            var my_group = node.game.kkgroup[p];
+            hls[p] =  shuffle(hl)[0];
+            g_assignment[my_group][hls[p]]++;
+            g_assignment["Total"][hls[p]]++;
+          }
+          for(p in node.game.kkgroup){
+            console.log("GA: %o", g_assignment);
+            var my_group = node.game.kkgroup[p];
+            var my_highlow = hls[p];
+            node.say('game_info', p,
+              { my_highlow: my_highlow,
+                my_group: my_group,
+                g_assignment: g_assignment,
+                c_high_low: c_high_low,
+                c_tax: c_tax
+              });
+          }
       }
   });
 

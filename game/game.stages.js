@@ -10,14 +10,14 @@
  */
 
 module.exports = function(stager, settings) {
-
+  stager
+    .next('kkpair_choice')
+    .next('kk_result');
   stager.repeatStage('votingRound', settings.VG_REPEAT);
   stager.step('votingGame');
   stager.step('votingResult');
   stager
-    .next('instructions_VotingGame')
-    .next('kkpair_choice')
-    .next('kk_result');
+    .next('instructions_VotingGame');
   stager.next('instructions_DG');
   stager.repeatStage('dict_games', settings.DG_REPEAT);
   stager.step("dict_game");

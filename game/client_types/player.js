@@ -275,7 +275,41 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('votingGame', {
         //donebutton: false,
-        frame: 'votingGame.html'
+        frame: 'votingGame.html',
+        cb: function (){
+          node.on.data('game_info', function(msg) {
+            var status = msg.data.my_highlow == 1 ? "High" : "Low";
+            W.setInnerHTML('status', status);
+            W.setInnerHTML('tax_amount', msg.data.c_tax);
+
+            W.setInnerHTML('high_amount', msg.data.c_high_low[1]);
+            W.setInnerHTML('low_amount', msg.data.c_high_low[0]);
+            var my_group = msg.data.my_group;
+            var other_group = my_group == "Klee" ? "Kandinsky" : "Klee";
+            W.setInnerHTML('myGroup', my_group);
+            W.setInnerHTML('otherGroup', other_group);
+
+            var my_group_assignment = msg.data.g_assignment[my_group];
+            var other_group_assignment = msg.data.g_assignment[other_group];
+            W.setInnerHTML('low_mygroup', my_group_assignment[0]);
+            W.setInnerHTML('low_othergroup', other_group_assignment[0]);
+            W.setInnerHTML('low_total', msg.data.g_assignment['Total'][0]);
+            W.setInnerHTML('high_mygroup', my_group_assignment[1]);
+            W.setInnerHTML('high_othergroup', other_group_assignment[1]);
+            W.setInnerHTML('high_total', msg.data.g_assignment['Total'][1]);
+
+            // node.game.mygroup = msg.data;
+            // { my_highlow: my_highlow,
+            //   my_group: my_group,
+            //   g_assignment: g_assignment,
+            //   c_high_low: c_high_low,
+            //   c_tax: c_tax
+            // });
+
+            console.log("geme_info: %o", msg.data);
+          });
+        }
+
     });
 
     stager.extendStep('votingResult', {
