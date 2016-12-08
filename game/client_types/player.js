@@ -297,24 +297,66 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             W.setInnerHTML('high_mygroup', my_group_assignment[1]);
             W.setInnerHTML('high_othergroup', other_group_assignment[1]);
             W.setInnerHTML('high_total', msg.data.g_assignment['Total'][1]);
-
-            // node.game.mygroup = msg.data;
-            // { my_highlow: my_highlow,
-            //   my_group: my_group,
-            //   g_assignment: g_assignment,
-            //   c_high_low: c_high_low,
-            //   c_tax: c_tax
-            // });
-
-            console.log("geme_info: %o", msg.data);
+            //var b = W.getElementById('abstain');
+            W.getElementById('abstain').onclick = function() {
+                node.say('vote', "SERVER", "abstain");
+                node.done();
+            };
+            W.getElementById('yes').onclick = function() {
+                node.say('vote', "SERVER", "yes");
+                node.done();
+            };
+            W.getElementById('no').onclick = function() {
+                node.say('vote', "SERVER", "no");
+                node.done();
+            };
+            //console.log("geme_info: %o", msg.data);
           });
         }
 
     });
 
     stager.extendStep('votingResult', {
-        //donebutton: false,
-        frame: 'votingResult.html'
+      //donebutton: false,
+      frame: 'votingResult.html',
+      cb: function() {
+        node.on.data('vote_results', function(msg){
+          console.log("vote results %o", msg.data);
+          W.setInnerHTML("yes_count", msg.data.votes['yes']);
+          W.setInnerHTML("no_count", msg.data.votes['no']);
+          W.setInnerHTML("abs_count", msg.data.votes['abstain']);
+          var outcome = "The tax proposal <b>passed</b>";
+          var passed = msg.data.passed;
+          if (passed == 0) {
+            outcome = "The tax proposal <b>did not pass</b>";
+          }
+          W.setInnerHTML("outcome", outcome);
+          var cost_vote = 20;
+          var c_high_low = msg.data.c_high_low;
+          var c_tax = msg.data.c_tax;
+          var voted = 1;
+          if(msg.data.myvote == "abstain") {
+            voted = 0;
+          }
+
+          W.setInnerHTML("high_amount_abstained", c_high_low[1] - passed * c_tax);
+          W.setInnerHTML("high_amount_voted", c_high_low[1] - cost_vote - passed * c_tax);
+          W.setInnerHTML("low_amount_abstained", c_high_low[0] + passed * c_tax);
+          W.setInnerHTML("low_amount_voted", c_high_low[0] - cost_vote + passed * c_tax);
+          W.setInnerHTML("my_amount",
+            c_high_low[msg.data.my_highlow]
+            - voted * cost_vote
+            - (msg.data.my_highlow * 2 - 1) * passed * c_tax
+          );
+          // passed: passed,
+          // votes: node.game.votes,
+          // myvote: node.game.indvotes[p.id],
+          // c_high_low: node.game.c_high_low,
+          // c_tax: node.game.c_tax,
+          // my_highlow: node.game.ind_high_low[p]
+        });
+      }
+
     });
 
 
