@@ -25,8 +25,6 @@ module.exports = function(stager, settings) {
   stager.repeatStage("public_goods_game", settings.PG_REPEAT);
   stager.step('number_addition_game')
   stager.step('number_addition_results');
-  stager
-    .next('instructions_KK');
 
 
   stager.repeatStage('votingRound', settings.VG_REPEAT);

@@ -54,9 +54,18 @@ module.exports = {
     // # Game specific properties
 
     // Numnber of game rounds repetitions.
-    VG_REPEAT: 4, // votingGame repeats
-    DG_REPEAT: 3, // dict_game repeats
-    PG_REPEAT: 3, // public_goods_game repeats
+    VG_REPEAT: 2, // votingGame repeats
+    DG_REPEAT: 2, // dict_game repeats
+    PG_REPEAT: 2, // public_goods_game repeats
+
+    //Encryption settings
+    CRYPT: {
+      key: '20161215a',
+      iv: '20161215b',
+    },
+
+    //post experimental survey link
+    survey_link: 'https://lse.eu.qualtrics.com/jfe/form/SV_8iwUHnPrPvlVgGN',
 
     // Number of participants in each group
     GROUP_SIZE: 6,

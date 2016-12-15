@@ -478,7 +478,17 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       frame: 'end.htm',
       cb: function() {
         node.game.visualTimer.setToZero();
-        W.getElementById("survey_link").setAttribute('href', 'http://yahoo.co.jp');
+        node.on.data('WIN', function(msg) {
+          var URL;
+          URL = node.game.settings.survey_link + "?" + "sec=" + msg.data.encrypted;
+          W.getElementById("survey_link").setAttribute('href', URL);
+
+          // W.setInnerHTML('group2', msg.data);
+          // W.setInnerHTML('group3', msg.data);
+          // W.setInnerHTML('groupSize', node.game.settings.GROUP_SIZE);
+          //
+          // node.game.mygroup = msg.data;
+        });
       }
     });
 

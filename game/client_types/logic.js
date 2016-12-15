@@ -53,22 +53,18 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('instructions_KK', {
       cb: function() {
         //let's do some test
-        var gs = node.game.payround_exact[0];
-        var db = node.game.memory.stage[gs];
-        console.log("check db contents");
-        if (db && db.size()) {
-          console.log(db.size());
-          console.log("%o", db.db);
-          console.log(db.db[0].player);
-          console.log(db.db[0].my_amount);
-          console.log(db.db[1].player);
-          console.log(db.db[1].my_amount);
-
-        }
-
-
-
-
+        // var gs = node.game.payround_exact[0];
+        // var db = node.game.memory.stage[gs];
+        // console.log("check db contents");
+        // if (db && db.size()) {
+        //   console.log(db.size());
+        //   console.log("%o", db.db);
+        //   console.log(db.db[0].player);
+        //   console.log(db.db[0].my_amount);
+        //   console.log(db.db[1].player);
+        //   console.log(db.db[1].my_amount);
+        //
+        // }
           console.log('Instructions KK.');
       }
   });
@@ -143,7 +139,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       var gs = this.getCurrentGameStage();
       var pg_payround = node.game.payround.PG;
       if(pg_payround == gs.round) {
-        node.game.payround_exact.push(gs);
+        node.game.payround_exact.push(["PG", gs]);
         console.log("This is a payround");
       }
 
@@ -191,7 +187,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       var gs = this.getCurrentGameStage();
       var dg_payround = node.game.payround.DG;
       if(dg_payround == gs.round) {
-        node.game.payround_exact.push(gs);
+        node.game.payround_exact.push(["DG", gs]);
         console.log("This is a payround");
       }
       var game_type = node.game.dg_orders[current.round - 1];
@@ -268,21 +264,16 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('votingGame', {
     cb: function() {
-      console.log('votingGame');
       var gs = this.getCurrentGameStage();
-      var vg_payround = node.game.payround.VG;
-      if(vg_payround == gs.round) {
-        node.game.payround_exact.push(gs);
-        console.log("This is a payround");
-        console.log("PAY ROUNDS: %o", node.game.payround_exact);
-      }
+      console.log('votingGame, Round ', gs.round);
+
       var high_lows = [[60, 140], [80, 120], [70, 130]];
       var tax_proposals = [20, 10];
       var c_high_low = shuffle(high_lows)[0];
       node.game.c_high_low = c_high_low;
       var c_tax = shuffle(tax_proposals)[0];
       node.game.c_tax = c_tax;
-      console.log(c_high_low);
+      //console.log(c_high_low);
       var hl = [0, 1];
       var g_assignment = {};
       g_assignment['Klee'] = [0, 0];
@@ -298,7 +289,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       }
       node.game.ind_high_low = {};
       for(p in node.game.kkgroup){
-        console.log("GA: %o", g_assignment);
+        //console.log("GA: %o", g_assignment);
         var my_group = node.game.kkgroup[p];
         var my_highlow = hls[p];
         node.game.ind_high_low[p] = my_highlow;
@@ -326,6 +317,14 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('votingResult', {
     cb: function() {
+      var gs = this.getCurrentGameStage();
+      var vg_payround = node.game.payround.VG;
+      if(vg_payround == gs.round) {
+        node.game.payround_exact.push(["VG", gs]);
+        console.log("This is a payround");
+        console.log("PAY ROUNDS: %o", node.game.payround_exact);
+      }
+
       console.log('votingResult');
       var rand = Math.random();
       var passed;
@@ -336,7 +335,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       } else {
         passed = rand > 0.5 ? 1 : 0;
       }
-      console.log(node.game.ind_high_low);
+      //console.log(node.game.ind_high_low);
       node.game.pl.each(function(p) {
         node.say('vote_results', p.id, {
           passed: passed,
@@ -361,7 +360,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       cb: function() {
           node.game.memory.save(channel.getGameDir() + 'data/data_' +
                                 node.nodename + '.json');
-          cbs.gameover();
+          cbs.endgame();
       }
   });
 
