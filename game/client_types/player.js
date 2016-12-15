@@ -196,6 +196,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('number_addition_results', {
+        donebutton: false,
         frame: 'number_addition_results.html',
         timer: settings.TIMER.number_addition_results,
 
@@ -203,6 +204,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           var stage_data = {};
           node.on.data('na_results', function(msg) {
             stage_data.myGroupTokens = msg.data[0];
+            stage_data.my_amount = msg.data[0];
             stage_data.otherGroupTokens = msg.data[1];
             stage_data.myGroup = msg.data[2];
             stage_data.otherGroup = msg.data[3];
@@ -276,7 +278,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             node.on.data('send', function(msg){
               valueR = msg.data;
               node.done({
-                value: 100 - valueS + valueR ,
+                my_amount: 100 - valueS + valueR ,
                 sent_value: valueS,
                 received_value: valueR,
                 recipient: recipient

@@ -181,7 +181,7 @@ function endgame() {
     var filename, bonusFile, bonus;
     var EXCHANGE_RATE;
 
-    EXCHANGE_RATE = settings.EXCHANGE_RATE_INSTRUCTIONS / settings.COINS;;
+    EXCHANGE_RATE = settings.EXCHANGE_RATE;
 
     console.log('FINAL PAYOFF PER PLAYER');
     console.log('***********************');
@@ -197,13 +197,14 @@ function endgame() {
         accesscode = code.AccessCode;
         exitcode = code.ExitCode;
 
-        if (node.env('treatment') === 'pp' && node.game.gameTerminated) {
-            code.win = 0;
-        }
-        else {
-            code.win = Number((code.win || 0) * (EXCHANGE_RATE)).toFixed(2);
-            code.win = parseFloat(code.win, 10);
-        }
+        // if (node.env('treatment') === 'pp' && node.game.gameTerminated) {
+        //     code.win = 0;
+        // }
+        // else {
+        //     code.win = Number((code.win || 0) * (EXCHANGE_RATE)).toFixed(2);
+        //     code.win = parseFloat(code.win, 10);
+        // }
+        code.win = 0;
         channel.registry.checkOut(p.id);
 
         node.say('WIN', p.id, {

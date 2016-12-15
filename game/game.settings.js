@@ -44,7 +44,7 @@ module.exports = {
         instructions: 120000,
         votingGame: 45000,
         votingResult: 30000,
-        number_addition_game: 30000,
+        number_addition_game: 15000,
         number_addition_results: 30000,
         instructions_DG: 120000,
         dict_games: 45000,
@@ -59,9 +59,11 @@ module.exports = {
     PG_REPEAT: 3, // public_goods_game repeats
 
     // Number of participants in each group
-    GROUP_SIZE: 9,
+    GROUP_SIZE: 6,
 
     DG_TOKENS: 100,
+
+    EXCHANGE_RATE: 100,
 
     // # Treatments definition.
 

@@ -38,13 +38,37 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('instructions', {
       cb: function() {
-          console.log('Instructions.');
+        node.game.payround_exact = [];
+        node.game.payround = {};
+        node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+        node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+        node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+        console.log("payrounds: %o", node.game.payround);
+
+        console.log('Instructions.');
       }
   });
 
 
   stager.extendStep('instructions_KK', {
       cb: function() {
+        //let's do some test
+        var gs = node.game.payround_exact[0];
+        var db = node.game.memory.stage[gs];
+        console.log("check db contents");
+        if (db && db.size()) {
+          console.log(db.size());
+          console.log("%o", db.db);
+          console.log(db.db[0].player);
+          console.log(db.db[0].my_amount);
+          console.log(db.db[1].player);
+          console.log(db.db[1].my_amount);
+
+        }
+
+
+
+
           console.log('Instructions KK.');
       }
   });
@@ -116,6 +140,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('number_addition_results', {
     cb: function() {
+      var gs = this.getCurrentGameStage();
+      var pg_payround = node.game.payround.PG;
+      if(pg_payround == gs.round) {
+        node.game.payround_exact.push(gs);
+        console.log("This is a payround");
+      }
+
       console.log('Number addition results.');
       //node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
       node.game.pl.each(function(p) {
@@ -145,18 +176,24 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     cb: function() {
       console.log('Instructions Dicataor Game.');
       var game_orders = ["Other", "Anonymous", "Peer"];
-      //game_orders = shuffle(game_orders);
+      game_orders = shuffle(game_orders);
+
       node.game.dg_orders = game_orders;
       node.game.dg_payround = parseInt(Math.random() * 3 + 1);
       console.log(game_orders);
-    },
-    timer: settings.TIMER.instructions_DG,
+    }
   });
 
   stager.extendStep('dict_game', {
     cb: function() {
       var current = this.getCurrentGameStage();
       //console.log(current.round);
+      var gs = this.getCurrentGameStage();
+      var dg_payround = node.game.payround.DG;
+      if(dg_payround == gs.round) {
+        node.game.payround_exact.push(gs);
+        console.log("This is a payround");
+      }
       var game_type = node.game.dg_orders[current.round - 1];
       console.log('dictator game round', current.round);
       console.log('dictator game type', game_type);
@@ -232,6 +269,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('votingGame', {
     cb: function() {
       console.log('votingGame');
+      var gs = this.getCurrentGameStage();
+      var vg_payround = node.game.payround.VG;
+      if(vg_payround == gs.round) {
+        node.game.payround_exact.push(gs);
+        console.log("This is a payround");
+        console.log("PAY ROUNDS: %o", node.game.payround_exact);
+      }
       var high_lows = [[60, 140], [80, 120], [70, 130]];
       var tax_proposals = [20, 10];
       var c_high_low = shuffle(high_lows)[0];
@@ -363,5 +407,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     return array;
   }
+
+  function range(start, count) {
+    return Array.apply(0, Array(count))
+      .map(function (element, index) {
+        return index + start;
+    });
+  }
+
 
 };

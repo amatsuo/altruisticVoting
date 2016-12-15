@@ -1,8 +1,6 @@
 module.exports = function(settings, headers) {
 
-    var C = 100;//settings.pp.COINS;
-    var R = 3; //settings.pp.REPEAT;
-    var E = 100; //settings.pp.EXCHANGE_RATE_INSTRUCTIONS;
+    var E = settings.standard.EXCHANGE_RATE; //settings.pp.EXCHANGE_RATE_INSTRUCTIONS;
 
     return {
         title: "INSTRUCTIONS: Module 3",
