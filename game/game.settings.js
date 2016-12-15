@@ -41,7 +41,14 @@ module.exports = {
      * used to initialize the game timer for the step.
      */
     TIMER: {
-        instructions: 60000
+        instructions: 120000,
+        votingGame: 45000,
+        votingResult: 30000,
+        number_addition_game: 30000,
+        number_addition_results: 30000,
+        instructions_DG: 120000,
+        dict_games: 45000,
+
     },
 
     // # Game specific properties

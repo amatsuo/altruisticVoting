@@ -24,11 +24,17 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   // Increment counter.
   counter = counter ? ++counter : settings.SESSION_ID || 1;
 
-  stager.setOnInit(function() {
-
-      // Initialize the client.
-
+  // Import other functions used in the game.
+  // Some objects are shared.
+  var cbs = channel.require(__dirname + '/includes/logic.callbacks.js', {
+      node: node,
+      gameRoom: gameRoom,
+      settings: settings,
+      counter: counter
+      // Reference to channel added by default.
   });
+
+  stager.setOnInit(cbs.init);
 
   stager.extendStep('instructions', {
       cb: function() {
@@ -87,9 +93,15 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       // console.log("gs: %o", gs);
 
       node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
+      node.game.indtokens = {};
       node.on.data('correct', function(msg){
         var cgroup = node.game.kkgroup[msg.from];
         node.game.grouptokens[cgroup]++;
+        if (msg.from in node.game.indtokens) {
+          node.game.indtokens[msg.from]++
+        } else {
+          node.game.indtokens[msg.from] = 1;
+        }
         console.log(cgroup + node.game.grouptokens[cgroup]);
         node.game.pl.each(function(p) {
           var res_group = node.game.kkgroup[p.id];
@@ -110,12 +122,20 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         var res_group = node.game.kkgroup[p.id];
         //console.log("round_info: %o", messageData);
         var other_group = res_group == "Klee" ? "Kandinsky" : "Klee";
+        var my_tokens;
+        if (p.id in node.game.indtokens) {
+          my_tokens = node.game.indtokens[p.id];
+        } else {
+          my_tokens = 0;
+        }
 
         node.say('na_results', p.id,
           [node.game.grouptokens[res_group],
           node.game.grouptokens[other_group],
           res_group,
-          other_group ]);
+          other_group,
+          my_tokens
+         ]);
       });
     }
   });
@@ -129,7 +149,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       node.game.dg_orders = game_orders;
       node.game.dg_payround = parseInt(Math.random() * 3 + 1);
       console.log(game_orders);
-    }
+    },
+    timer: settings.TIMER.instructions_DG,
   });
 
   stager.extendStep('dict_game', {
@@ -296,6 +317,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       cb: function() {
           node.game.memory.save(channel.getGameDir() + 'data/data_' +
                                 node.nodename + '.json');
+          cbs.gameover();
       }
   });
 

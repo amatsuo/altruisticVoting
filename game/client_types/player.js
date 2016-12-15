@@ -59,7 +59,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('instructions', {
-        frame: 'instructions2.html'
+        frame: 'instructions2.html',
     });
 
     stager.extendStep('instructions_KK', {
@@ -131,7 +131,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('number_addition_game', {
+      donebutton: false,
       frame: 'number_addition_game.html',
+      timer: settings.TIMER.number_addition_game,
+
       cb: function() {
         var num1, num2;
         // show initial set of numbers
@@ -191,24 +194,42 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
       }
     });
+
     stager.extendStep('number_addition_results', {
         frame: 'number_addition_results.html',
+        timer: settings.TIMER.number_addition_results,
+
         cb: function() {
+          var stage_data = {};
           node.on.data('na_results', function(msg) {
+            stage_data.myGroupTokens = msg.data[0];
+            stage_data.otherGroupTokens = msg.data[1];
+            stage_data.myGroup = msg.data[2];
+            stage_data.otherGroup = msg.data[3];
+            stage_data.my_tokens = msg.data[4];
             W.setInnerHTML('myGroupTokens', msg.data[0]);
             W.setInnerHTML('otherGroupTokens', msg.data[1]);
             W.setInnerHTML('myGroup', "(" + msg.data[2] + ")");
             W.setInnerHTML('otherGroup', "(" + msg.data[3] + ")");
           });
+          var b = W.getElementById("goNext");
+          b.onclick = function(){
+            node.done(stage_data);
+          };
+
         }
     });
 
     stager.extendStep('instructions_DG', {
-        frame: 'instructions_DG.html'
+        frame: 'instructions_DG.html',
+        timer: settings.TIMER.instructions_DG,
+
     });
 
     stager.extendStep('dict_game', {
       donebutton: false,
+      timer: settings.TIMER.dict_game,
+
       frame: 'dict_game.html',
       cb: function() {
         var otherGroup = node.game.mygroup == "Klee" ? "Kandinsky" : "Klee";
@@ -258,8 +279,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
                 value: 100 - valueS + valueR ,
                 sent_value: valueS,
                 received_value: valueR,
-                recipient: recipient,
-                module: 'Module3'
+                recipient: recipient
               });
               node.say('send', recipient, valueS);
             });
@@ -274,10 +294,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('votingGame', {
-        //donebutton: false,
+        donebutton: false,
         frame: 'votingGame.html',
+        timer: settings.TIMER.votingGame,
         cb: function (){
           node.on.data('game_info', function(msg) {
+            console.log("%o", msg.data);
+            var stage_data = msg.data;
             var status = msg.data.my_highlow == 1 ? "High" : "Low";
             W.setInnerHTML('status', status);
             W.setInnerHTML('tax_amount', msg.data.c_tax);
@@ -298,17 +321,24 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             W.setInnerHTML('high_othergroup', other_group_assignment[1]);
             W.setInnerHTML('high_total', msg.data.g_assignment['Total'][1]);
             //var b = W.getElementById('abstain');
+            stage_data.my_group_assignment = my_group_assignment;
+            stage_data.other_group_assignment = other_group_assignment;
+            stage_data.assignment_total = msg.data.g_assignment['Total'];
+            stage_data.g_assignment = null;
             W.getElementById('abstain').onclick = function() {
                 node.say('vote', "SERVER", "abstain");
-                node.done();
+                stage_data.vote = 'abstain';
+                node.done(stage_data);
             };
             W.getElementById('yes').onclick = function() {
                 node.say('vote', "SERVER", "yes");
-                node.done();
+                stage_data.vote = 'yes';
+                node.done(stage_data);
             };
             W.getElementById('no').onclick = function() {
                 node.say('vote', "SERVER", "no");
-                node.done();
+                stage_data.vote = 'no';
+                node.done(stage_data);
             };
             //console.log("geme_info: %o", msg.data);
           });
@@ -317,10 +347,15 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('votingResult', {
-      //donebutton: false,
+      donebutton: false,
+      timer: settings.TIMER.votingResult,
+
       frame: 'votingResult.html',
       cb: function() {
+        var stage_data, my_amount;
+
         node.on.data('vote_results', function(msg){
+          stage_data = msg.data;
           console.log("vote results %o", msg.data);
           W.setInnerHTML("yes_count", msg.data.votes['yes']);
           W.setInnerHTML("no_count", msg.data.votes['no']);
@@ -343,11 +378,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           W.setInnerHTML("high_amount_voted", c_high_low[1] - cost_vote - passed * c_tax);
           W.setInnerHTML("low_amount_abstained", c_high_low[0] + passed * c_tax);
           W.setInnerHTML("low_amount_voted", c_high_low[0] - cost_vote + passed * c_tax);
-          W.setInnerHTML("my_amount",
-            c_high_low[msg.data.my_highlow]
-            - voted * cost_vote
-            - (msg.data.my_highlow * 2 - 1) * passed * c_tax
-          );
+          my_amount = c_high_low[msg.data.my_highlow]
+                      - voted * cost_vote
+                      - (msg.data.my_highlow * 2 - 1) * passed * c_tax;
+          stage_data.my_amount = my_amount;
+          W.setInnerHTML("my_amount", my_amount);
           // passed: passed,
           // votes: node.game.votes,
           // myvote: node.game.indvotes[p.id],
@@ -355,8 +390,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           // c_tax: node.game.c_tax,
           // my_highlow: node.game.ind_high_low[p]
         });
+        var b = W.getElementById("goNext");
+        b.onclick = function(){
+          node.done(stage_data);
+        };
       }
-
     });
 
 
@@ -434,11 +472,12 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     // });
 
     stager.extendStep('end', {
-        donebutton: false,
-        frame: 'end.htm',
-        cb: function() {
-            node.game.visualTimer.setToZero();
-        }
+      donebutton: false,
+      frame: 'end.htm',
+      cb: function() {
+        node.game.visualTimer.setToZero();
+        W.getElementById("survey_link").setAttribute('href', 'http://yahoo.co.jp');
+      }
     });
 
     game = setup;

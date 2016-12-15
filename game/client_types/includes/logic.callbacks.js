@@ -31,24 +31,24 @@ var counter = module.parent.exports.counter;
 
 function init() {
     DUMP_DIR = path.resolve(channel.getGameDir(), 'data') + '/' + counter + '/';
-    
+
     fs.mkdirsSync(DUMP_DIR);
 
     console.log('********************** ultimatum room ' + counter++ +
                 ' **********************');
 
     // Create matcher and matches.
-    this.matcher = new Matcher();
-    this.matcher.generateMatches('random', node.game.pl.size());
-    this.matcher.setIds(node.game.pl.id.getAllKeys());
+    // this.matcher = new Matcher();
+    // this.matcher.generateMatches('random', node.game.pl.size());
+    // this.matcher.setIds(node.game.pl.id.getAllKeys());
+    //
+    // this.roles = {
+    //     RESPONDENT: 0,
+    //     BIDDER: 1,
+    //     SOLO: -1
+    // };
 
-    this.roles = {
-        RESPONDENT: 0,
-        BIDDER: 1,
-        SOLO: -1
-    };
-
-    this.roleMapper = {};
+    // this.roleMapper = {};
 
     this.lastStage = this.getCurrentGameStage();
 
@@ -72,7 +72,7 @@ function init() {
 
                 // Respondent payoff.
                 code = channel.registry.getClient(p);
-                
+
                 gain = node.game.lastBids[p];
                 if (gain) {
                     code.win = !code.win ? gain : code.win + gain;
@@ -86,8 +86,8 @@ function init() {
         if (db && db.size()) {
 
             prefix = DUMP_DIR + 'memory_' + currentStage;
-            db.save(prefix + '.csv', { flags: 'w' }); 
-            db.save(prefix + '.nddb', { flags: 'w' }); 
+            db.save(prefix + '.csv', { flags: 'w' });
+            db.save(prefix + '.nddb', { flags: 'w' });
 
             console.log('Round data saved ', currentStage);
         }
@@ -138,7 +138,7 @@ function gameover() {
 
 function doMatch() {
     var match, id1, id2, soloId;
-    
+
     // Generates new random matches for this round.
     node.game.matcher.match(true)
     match = node.game.matcher.getMatch();
@@ -227,7 +227,7 @@ function endgame() {
     });
     bonusFile.write(["access", "exit", "bonus", "terminated"].join(', ') + '\n');
     bonus.forEach(function(v) {
-        bonusFile.write(v.join(', ') + '\n'); 
+        bonusFile.write(v.join(', ') + '\n');
     });
     bonusFile.end();
 
@@ -291,7 +291,7 @@ function reconnectUltimatum(p, reconOptions) {
                     this.node.emit('BID_DONE', this.lastOffer, false);
                 });
             }
-        };        
+        };
     }
 
     else if (role === 'SOLO') {
