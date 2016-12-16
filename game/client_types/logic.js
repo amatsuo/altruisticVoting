@@ -24,21 +24,47 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   // Increment counter.
   counter = counter ? ++counter : settings.SESSION_ID || 1;
 
-  stager.setOnInit(function() {
-
-      // Initialize the client.
-
+  // Import other functions used in the game.
+  // Some objects are shared.
+  var cbs = channel.require(__dirname + '/includes/logic.callbacks.js', {
+      node: node,
+      gameRoom: gameRoom,
+      settings: settings,
+      counter: counter
+      // Reference to channel added by default.
   });
+
+  stager.setOnInit(cbs.init);
 
   stager.extendStep('instructions', {
       cb: function() {
-          console.log('Instructions.');
+        node.game.payround_exact = [];
+        node.game.payround = {};
+        node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+        node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+        node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+        console.log("payrounds: %o", node.game.payround);
+
+        console.log('Instructions.');
       }
   });
 
 
   stager.extendStep('instructions_KK', {
       cb: function() {
+        //let's do some test
+        // var gs = node.game.payround_exact[0];
+        // var db = node.game.memory.stage[gs];
+        // console.log("check db contents");
+        // if (db && db.size()) {
+        //   console.log(db.size());
+        //   console.log("%o", db.db);
+        //   console.log(db.db[0].player);
+        //   console.log(db.db[0].my_amount);
+        //   console.log(db.db[1].player);
+        //   console.log(db.db[1].my_amount);
+        //
+        // }
           console.log('Instructions KK.');
       }
   });
@@ -53,6 +79,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.kkscore.push([msg.from, msg.data]);
         console.log(node.game.kkscore[node.game.kkscore.length - 1]);
       });
+
       console.log('kkpair choice.');
     }
   });
@@ -82,10 +109,19 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('number_addition_game', {
     cb: function() {
       console.log('Number addition game.');
+      // var gs = this.getCurrentGameStage();
+      // console.log("gs: %o", gs);
+
       node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
+      node.game.indtokens = {};
       node.on.data('correct', function(msg){
         var cgroup = node.game.kkgroup[msg.from];
         node.game.grouptokens[cgroup]++;
+        if (msg.from in node.game.indtokens) {
+          node.game.indtokens[msg.from]++
+        } else {
+          node.game.indtokens[msg.from] = 1;
+        }
         console.log(cgroup + node.game.grouptokens[cgroup]);
         node.game.pl.each(function(p) {
           var res_group = node.game.kkgroup[p.id];
@@ -98,17 +134,125 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     }
   });
 
+  stager.extendStep('number_addition_results', {
+    cb: function() {
+      var gs = this.getCurrentGameStage();
+      var pg_payround = node.game.payround.PG;
+      if(pg_payround == gs.round) {
+        node.game.payround_exact.push(["PG", gs]);
+        console.log("This is a payround");
+      }
+
+      console.log('Number addition results.');
+      //node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
+      node.game.pl.each(function(p) {
+        var res_group = node.game.kkgroup[p.id];
+        //console.log("round_info: %o", messageData);
+        var other_group = res_group == "Klee" ? "Kandinsky" : "Klee";
+        var my_tokens;
+        if (p.id in node.game.indtokens) {
+          my_tokens = node.game.indtokens[p.id];
+        } else {
+          my_tokens = 0;
+        }
+
+        node.say('na_results', p.id,
+          [node.game.grouptokens[res_group],
+          node.game.grouptokens[other_group],
+          res_group,
+          other_group,
+          my_tokens
+         ]);
+      });
+    }
+  });
+
 
   stager.extendStep('instructions_DG', {
-      cb: function() {
-          console.log('Instructions Dicataor Game.');
-      }
+    cb: function() {
+      console.log('Instructions Dicataor Game.');
+      var game_orders = ["Other", "Anonymous", "Peer"];
+      game_orders = shuffle(game_orders);
+
+      node.game.dg_orders = game_orders;
+      node.game.dg_payround = parseInt(Math.random() * 3 + 1);
+      console.log(game_orders);
+    }
   });
 
   stager.extendStep('dict_game', {
-      cb: function() {
-          console.log('dictator game');
+    cb: function() {
+      var current = this.getCurrentGameStage();
+      //console.log(current.round);
+      var gs = this.getCurrentGameStage();
+      var dg_payround = node.game.payround.DG;
+      if(dg_payround == gs.round) {
+        node.game.payround_exact.push(["DG", gs]);
+        console.log("This is a payround");
       }
+      var game_type = node.game.dg_orders[current.round - 1];
+      console.log('dictator game round', current.round);
+      console.log('dictator game type', game_type);
+      var playerA, playerB;
+      if(game_type == "Anonymous"){
+        var g, i;
+        g = node.game.pl.shuffle();
+        for(i = 0;i < node.game.pl.size(); i = i + 2){
+            playerA = g.db[i].id;
+            playerB = g.db[i + 1].id;
+            node.say('recipient' , playerA, [playerB, game_type]);
+            node.say('recipient' , playerB, [playerA, game_type]);
+        }
+      }
+      var members = { Klee : [],
+        Kandinsky: []};
+      var id;
+      for (id in node.game.kkgroup) {
+        if (node.game.kkgroup[id] == 'Klee') {
+          members.Klee.push(id);
+        } else {
+          members.Kandinsky.push(id);
+        }
+      }
+      console.log("Klee", members.Klee);
+      console.log("Kandinsky", members.Kandinsky);
+      if(game_type == "Peer"){
+        var gr_text;
+        for (gr_text in members) {
+          var cgroup = members[gr_text];
+          cgroup = shuffle(cgroup);
+          var i;
+          for (i = 0; i < cgroup.length; i = i + 2) {
+
+            var j = (i + 1) % cgroup.length;
+            console.log(i, j);
+            playerA = cgroup[i];
+            playerB = cgroup[j];
+            console.log(playerA, playerB);
+            node.say('recipient' , playerA, [playerB, game_type]);
+            node.say('recipient' , playerB, [playerA, game_type]);
+          }
+        }
+      }
+      if(game_type == "Other"){
+        var max_idx = Math.max(members.Klee.length, members.Kandinsky.length);
+        var i;
+        for (i = 0; i < max_idx; i++) {
+          members.Klee = shuffle(members.Klee);
+          members.Kandinsky = shuffle(members.Kandinsky);
+
+          var i_kl , i_kn;
+          i_kl = i % members.Klee.length;
+          i_kn = i % members.Kandinsky.length;
+          playerA = members.Klee[i_kl];
+          playerB = members.Kandinsky[i_kn];
+          console.log(playerA, playerB);
+
+          node.say('recipient' , playerA, [playerB, game_type]);
+          node.say('recipient' , playerB, [playerA, game_type]);
+        }
+      }
+    }
   });
 
 
@@ -119,22 +263,104 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   });
 
   stager.extendStep('votingGame', {
-      cb: function() {
-          console.log('votingGame');
+    cb: function() {
+      var gs = this.getCurrentGameStage();
+      console.log('votingGame, Round ', gs.round);
+
+      var high_lows = [[60, 140], [80, 120], [70, 130]];
+      var tax_proposals = [20, 10];
+      var c_high_low = shuffle(high_lows)[0];
+      node.game.c_high_low = c_high_low;
+      var c_tax = shuffle(tax_proposals)[0];
+      node.game.c_tax = c_tax;
+      //console.log(c_high_low);
+      var hl = [0, 1];
+      var g_assignment = {};
+      g_assignment['Klee'] = [0, 0];
+      g_assignment['Kandinsky'] = [0, 0];
+      g_assignment['Total'] = [0, 0];
+      var hls = {};
+      var p;
+      for(p in node.game.kkgroup){
+        var my_group = node.game.kkgroup[p];
+        hls[p] =  shuffle(hl)[0];
+        g_assignment[my_group][hls[p]]++;
+        g_assignment["Total"][hls[p]]++;
       }
+      node.game.ind_high_low = {};
+      for(p in node.game.kkgroup){
+        //console.log("GA: %o", g_assignment);
+        var my_group = node.game.kkgroup[p];
+        var my_highlow = hls[p];
+        node.game.ind_high_low[p] = my_highlow;
+        node.say('game_info', p,
+          { my_highlow: my_highlow,
+            my_group: my_group,
+            g_assignment: g_assignment,
+            c_high_low: c_high_low,
+            c_tax: c_tax
+          });
+      }
+      node.game.votes = {
+        'yes': 0,
+        'no' : 0,
+        'abstain': 0
+      }
+      node.game.indvotes = {};
+      node.on.data("vote", function(msg){
+        node.game.votes[msg.data]++;
+        node.game.indvotes[msg.from] = msg.data;
+      });
+    }
   });
 
-  stager.extendStep('game', {
-      cb: function() {
-          console.log('Game round: ' + node.player.stage.round);
-          doMatch();
+
+  stager.extendStep('votingResult', {
+    cb: function() {
+      var gs = this.getCurrentGameStage();
+      var vg_payround = node.game.payround.VG;
+      if(vg_payround == gs.round) {
+        node.game.payround_exact.push(["VG", gs]);
+        console.log("This is a payround");
+        console.log("PAY ROUNDS: %o", node.game.payround_exact);
       }
+
+      console.log('votingResult');
+      var rand = Math.random();
+      var passed;
+      if(node.game.votes['yes'] > node.game.votes['no'] ){
+        passed = 1;
+      } else if (node.game.votes['yes'] < node.game.votes['no'] ) {
+        passed = 0;
+      } else {
+        passed = rand > 0.5 ? 1 : 0;
+      }
+      //console.log(node.game.ind_high_low);
+      node.game.pl.each(function(p) {
+        node.say('vote_results', p.id, {
+          passed: passed,
+          votes: node.game.votes,
+          myvote: node.game.indvotes[p.id],
+          c_high_low: node.game.c_high_low,
+          c_tax: node.game.c_tax,
+          my_highlow: node.game.ind_high_low[p.id]
+        });
+      });
+    }
   });
+
+  // stager.extendStep('game', {
+  //     cb: function() {
+  //         console.log('Game round: ' + node.player.stage.round);
+  //         doMatch();
+  //     }
+  // });
 
   stager.extendStep('end', {
       cb: function() {
           node.game.memory.save(channel.getGameDir() + 'data/data_' +
                                 node.nodename + '.json');
+          cbs.endgame();
       }
   });
 
@@ -161,4 +387,32 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       node.say('ROLE_DICTATOR', players[0], players[1]);
       node.say('ROLE_OBSERVER', players[1]);
   }
+
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  function range(start, count) {
+    return Array.apply(0, Array(count))
+      .map(function (element, index) {
+        return index + start;
+    });
+  }
+
+
 };

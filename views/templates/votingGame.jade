@@ -15,49 +15,75 @@ block mainContent
     div(id='container')
         h1=Module
         div(id='gameContents')
-            h2 Round Information
-            h3 Income
-            table.info_table
-                tr
-                    td High income
-                    td.nums!=high_amount + " tokens"
-                tr
-                    td Low income
-                    td.nums=low_amount + " tokens"
-                tr
-                    td Proposed tax amount 
-                    td.nums=taxAmount + " tokens"
-            #yourinfo!=you
-            h3 Distribution of Income
+            h2 Information for this round
+            //- h3 Income
+            //- table.info_table
+            //-     tr
+            //-         td High income
+            //-         td.nums
+            //-           span#high_amount
+            //-           span  tokens
+            //-     tr
+            //-         td Low income
+            //-         td.nums
+            //-           span#low_amount
+            //-           span  tokens
+            //-     tr
+            //-         td Proposed tax amount 
+            //-         td.nums
+            //-           span#tax_amount
+            //-           span  tokens
+            //-         
+            // h3 Distribution of Income
             table.info_table
                 tr
                     th &nbsp;
-                    th High earners
-                    th Low earners
+                    th Pre-tax income
+                    th
+                      span#myGroup
+                      span  (You)
+                    th#otherGroup
+                    th#total Total
                 tr
-                    td=myGroup + " (You)"
-                    td.nums=incomeDist[myGroup]['High']
-                    td.nums=incomeDist[myGroup]['Low']
+                    td Low eaners 
+                    td
+                      span#low_amount 
+                      span  tokens
+                    td.nums#low_mygroup
+                    td.nums#low_othergroup
+                    td.nums#low_total
                 tr
-                    td=otherGroup
-                    td.nums=incomeDist[otherGroup]['High']
-                    td.nums=incomeDist[otherGroup]['Low']
-                tr
-                    td Total
-                    td.nums=incomeDist[myGroup]['High'] + incomeDist[otherGroup]['High']
-                    td.nums=incomeDist[myGroup]['Low'] +incomeDist[otherGroup]['Low']
+                    td High earners 
+                    td
+                      span#high_amount 
+                      span  tokens
+                    td.nums#high_mygroup
+                    td.nums#high_othergroup
+                    td.nums#high_total
+            br
+            ul
+              li In this round, you are a 
+                b
+                  span#status
+                  span  earner.
+              li Proposed tax amount is 
+                b
+                  span#tax_amount
+                  span  tokens.
+                
+    
             br
             br
             #decision_box
                 h3 Your Decision
                 span.button_div
-                    input(type='button', id='read', value="Do Not Vote", class='btn btn-lg btn-primary')
+                    input(type='button', id='abstain', value="Do Not Vote", class='btn btn-lg btn-primary')
                 br
                 br
                 span.button_div
-                    input(type='button', id='read', value="Vote for Tax", class='btn btn-lg btn-primary')
+                    input(type='button', id='yes', value="Vote Yes for Tax", class='btn btn-lg btn-primary')
                 span.button_div
-                    input(type='button', id='read', value="Vote against Tax", class='btn btn-lg btn-primary')
+                    input(type='button', id='no', value="Vote No for Tax", class='btn btn-lg btn-primary')
 
                 .modal(id='ERROR')
                     .modal-dialog.modal-lg
@@ -72,5 +98,3 @@ block mainContent
 
                             .modal-footer
                                 button(type="button", class="btn btn-primary", data-dismiss="modal")=errorClose
-
-

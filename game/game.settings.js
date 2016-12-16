@@ -41,17 +41,38 @@ module.exports = {
      * used to initialize the game timer for the step.
      */
     TIMER: {
-        instructions: 60000
+        instructions: 120000,
+        votingGame: 45000,
+        votingResult: 30000,
+        number_addition_game: 15000,
+        number_addition_results: 30000,
+        instructions_DG: 120000,
+        dict_games: 45000,
+
     },
 
     // # Game specific properties
 
     // Numnber of game rounds repetitions.
-    REPEAT: 4,
-    DG_REPEAT: 3,
+    VG_REPEAT: 2, // votingGame repeats
+    DG_REPEAT: 2, // dict_game repeats
+    PG_REPEAT: 2, // public_goods_game repeats
+
+    //Encryption settings
+    CRYPT: {
+      key: '20161215a',
+      iv: '20161215b',
+    },
+
+    //post experimental survey link
+    survey_link: 'https://lse.eu.qualtrics.com/jfe/form/SV_8iwUHnPrPvlVgGN',
 
     // Number of participants in each group
-    GROUP_SIZE: 9,
+    GROUP_SIZE: 6,
+
+    DG_TOKENS: 100,
+
+    EXCHANGE_RATE: 100,
 
     // # Treatments definition.
 

@@ -21,14 +21,14 @@ block mainContent
                !=text1
                br
                br
-               !=textRecipient
+               #recipient
                br
                br
                =text2
 
             tr
                td &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  input(   type= "number", min= "0",max= num_tokens,id= "Send")
+                  input(type= "number", min= "0",max= num_tokens,id= "Send")
                td &nbsp;
                td
                    =text3
@@ -49,5 +49,3 @@ block mainContent
 
                   .modal-footer
                      button(type="button", class="btn btn-primary", data-dismiss="modal")=errorClose
-
-

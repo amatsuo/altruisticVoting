@@ -10,26 +10,37 @@
  */
 
 module.exports = function(stager, settings) {
-
   stager
-    .next('number_addition_result')
+    .next('instructions');
+  stager
     .next('kkpair_choice')
     .next('kk_result');
+
+
+  stager.next('instructions_DG');
+  stager.repeatStage('dict_games', settings.DG_REPEAT);
+  stager.step("dict_game");
   stager
-    .next('number_addition_game');
+    .next('instructions_KK');
+  stager.repeatStage("public_goods_game", settings.PG_REPEAT);
+  stager.step('number_addition_game')
+  stager.step('number_addition_results');
+
+
+  stager.repeatStage('votingRound', settings.VG_REPEAT);
+  stager.step('votingGame');
+  stager.step('votingResult');
+  stager
+    .next('instructions_VotingGame');
 
   stager
-    .next('instructions_KK')
-    .next('votingGame');
+    .next('end');
+
+    // .repeat('game', settings.VG_REPEAT);
+
   stager
-    .repeatStage('dict_game', settings.DG_REPEAT);
-  stager
-    .next('instructions_VotingGame')
-    .next('instructions')
     //.next('kkpair_choice')
-    .next('instructions_DG')
-    .repeat('game', settings.REPEAT)
-    .next('end')
+
     .gameover();
 
   // Modify the stager to skip one stage.

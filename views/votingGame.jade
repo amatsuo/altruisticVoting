@@ -1,0 +1,76 @@
+extends iframe-layout
+
+block extraHead
+    link(rel='stylesheet', href='/altruisticVoting/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/altruisticVoting/css/votingGame.css')
+    //link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css')
+
+
+block mainContent
+   //.alert.alert-dismissable.alert-danger
+      button.close( type="button", data-dismiss="alert" ) ×
+      | Danger Will Robinson!
+
+
+    div(id='container')
+        h1=Module
+        div(id='gameContents')
+            h2 Round Information
+            h3 Income
+            table.info_table
+                tr
+                    td High income
+                    td.nums!=high_amount + " tokens"
+                tr
+                    td Low income
+                    td.nums=low_amount + " tokens"
+                tr
+                    td Proposed tax amount 
+                    td.nums=taxAmount + " tokens"
+            #yourinfo!=you
+            h3 Distribution of Income
+            table.info_table
+                tr
+                    th &nbsp;
+                    th High earners
+                    th Low earners
+                tr
+                    td=myGroup + " (You)"
+                    td.nums=incomeDist[myGroup]['High']
+                    td.nums=incomeDist[myGroup]['Low']
+                tr
+                    td=otherGroup
+                    td.nums=incomeDist[otherGroup]['High']
+                    td.nums=incomeDist[otherGroup]['Low']
+                tr
+                    td Total
+                    td.nums=incomeDist[myGroup]['High'] + incomeDist[otherGroup]['High']
+                    td.nums=incomeDist[myGroup]['Low'] +incomeDist[otherGroup]['Low']
+            br
+            br
+            #decision_box
+                h3 Your Decision
+                span.button_div
+                    input(type='button', id='read', value="Do Not Vote", class='btn btn-lg btn-primary')
+                br
+                br
+                span.button_div
+                    input(type='button', id='read', value="Vote for Tax", class='btn btn-lg btn-primary')
+                span.button_div
+                    input(type='button', id='read', value="Vote against Tax", class='btn btn-lg btn-primary')
+
+                .modal(id='ERROR')
+                    .modal-dialog.modal-lg
+                        .modal-content(style=".modal-content")
+                            .modal-header
+
+                                button(type="button", class="close", data-dismiss="modal",aria-label="Close",)
+                                    span(aria-hidden="true") &times;
+
+                            .modal-body(style=".modal-body")
+                                    =error
+
+                            .modal-footer
+                                button(type="button", class="btn btn-primary", data-dismiss="modal")=errorClose
+
+
