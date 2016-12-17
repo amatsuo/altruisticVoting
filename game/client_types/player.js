@@ -47,6 +47,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         // Setup page: header + frame.
         header = W.generateHeader();
         frame = W.generateFrame();
+        W.setHeaderPosition('top');
 
         // Add widgets.
         this.visualRound = node.widgets.append('VisualRound', header);
