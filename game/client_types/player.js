@@ -67,6 +67,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         frame: 'instructions_KK.html'
     });
 
+    stager.extendStep('instructions_PG', {
+        frame: 'instructions_PG.html'
+    });
+
     stager.extendStep('kkpair_choice', {
         donebutton: false,
         frame: 'kkpair_choice.html',
