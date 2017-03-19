@@ -11,6 +11,11 @@
 
 module.exports = function(stager, settings) {
   stager
+    .next('instructions_VotingGame');
+  stager.next('instructions_DG');
+  stager
+    .next("instructions_PG");
+  stager
     .next('instructions');
   stager
     .next('kkpair_choice')
@@ -30,8 +35,6 @@ module.exports = function(stager, settings) {
   stager.repeatStage('votingRound', settings.VG_REPEAT);
   stager.step('votingGame');
   stager.step('votingResult');
-  stager
-    .next('instructions_VotingGame');
 
   stager
     .next('end');

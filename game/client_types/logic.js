@@ -52,20 +52,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('instructions_KK', {
       cb: function() {
-        //let's do some test
-        // var gs = node.game.payround_exact[0];
-        // var db = node.game.memory.stage[gs];
-        // console.log("check db contents");
-        // if (db && db.size()) {
-        //   console.log(db.size());
-        //   console.log("%o", db.db);
-        //   console.log(db.db[0].player);
-        //   console.log(db.db[0].my_amount);
-        //   console.log(db.db[1].player);
-        //   console.log(db.db[1].my_amount);
-        //
-        // }
           console.log('Instructions KK.');
+      }
+  });
+
+  stager.extendStep('instructions_PG', {
+      cb: function() {
+          console.log('Instructions PG.');
       }
   });
 
@@ -268,9 +261,18 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       console.log('votingGame, Round ', gs.round);
 
       var high_lows = [[60, 140], [80, 120], [70, 130]];
-      var tax_proposals = [20, 10];
       var c_high_low = shuffle(high_lows)[0];
       node.game.c_high_low = c_high_low;
+      var tax_proposals;
+      if(c_high_low[0] == 60) {
+        tax_proposals = [40, 30, 20, 10];
+      }
+      if(c_high_low[0] == 80) {
+        tax_proposals = [20, 10];
+      }
+      if(c_high_low[0] == 70) {
+        tax_proposals = [30, 20, 10];
+      }
       var c_tax = shuffle(tax_proposals)[0];
       node.game.c_tax = c_tax;
       //console.log(c_high_low);
