@@ -59,9 +59,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         // this.debugInfo = node.widgets.append('DebugInfo', header)
     });
 
-    stager.extendStep('instructions', {
-        frame: 'instructions2.html',
-    });
+    // Commented out because the general instructions are moved to Qualtrics survey
+    // stager.extendStep('instructions', {
+    //     frame: 'instructions2.html',
+    // });
 
     stager.extendStep('instructions_KK', {
         frame: 'instructions_KK.html'
@@ -228,9 +229,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('instructions_DG', {
-        frame: 'instructions_DG.html',
-        timer: settings.TIMER.instructions_DG,
-
+        frame: 'instructions_VotingGame.html',
+        timer: settings.TIMER.instructions_DG
     });
 
     stager.extendStep('dict_game', {

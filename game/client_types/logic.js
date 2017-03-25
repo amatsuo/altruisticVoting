@@ -36,23 +36,32 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.setOnInit(cbs.init);
 
-  stager.extendStep('instructions', {
-      cb: function() {
-        node.game.payround_exact = [];
-        node.game.payround = {};
-        node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
-        node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
-        node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
-        console.log("payrounds: %o", node.game.payround);
-
-        console.log('Instructions.');
-      }
-  });
+  // commented out
+  // stager.extendStep('instructions', {
+  //     cb: function() {
+  //       node.game.payround_exact = [];
+  //       node.game.payround = {};
+  //       node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+  //       node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+  //       node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+  //       console.log("payrounds: %o", node.game.payround);
+  //
+  //       console.log('Instructions.');
+  //     }
+  // });
 
 
   stager.extendStep('instructions_KK', {
       cb: function() {
           console.log('Instructions KK.');
+          // payround for each module is selected here.
+          // moved from general instructions
+          node.game.payround_exact = [];
+          node.game.payround = {};
+          node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+          node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+          node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+          console.log("payrounds: %o", node.game.payround);
       }
   });
 
