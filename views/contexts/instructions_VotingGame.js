@@ -14,7 +14,7 @@ module.exports = function(settings, headers) {
         information: "<li>The numbers of tokens for High and Low incomes</li><li>The numbers of High and Low income earners in your group</li><li>The numbers of High and Low income earners in the other group</li>",
         decisions: "<b>Tax</b>: In each round, you will be presented with a proposal for a tax. If the tax proposal is approved, each High-income earner will pay a fixed amount of tokens and each Low-income earner will receive the amount of tokens same as the tax. For example, if the tax is 20 tokens, High-income earners will pay 20 tokens and Low-income earners will receive 20 tokens.",
         election: "<b>Voting</b>: Whether to introduce a tax is determined by voting. Each player votes either \"Yes\" or \"No\" to the proposed tax. The choice that receives a majority of votes is the winner. In the event of a tie, the computer will determine the winning choice at random (by a draw).",
-        cost_vote: "It costs 5 tokens to vote. You are free to abstain. If you abstain, you do not have to pay the cost.<br><br> Here are some examples.",
+        cost_vote: "It costs <span id='cost_vote'> </span> tokens to vote. You are free to abstain. If you abstain, you do not have to pay the cost.<br><br> Here are some examples.",
         example1: "<b>Example 1</b>",
         ex1_text1: "You are a high income earner with 120 tokens of initial income. The proposed tax amount is 20 tokens. You voted for the tax by paying 5 tokens.",
         ex1_outcome1: "<em>if tax propsal is rejected...</em><br>Your total income is gross income minus the voting cost: <div style='text-align: center'>120 - 5 = 115 tokens</div>",

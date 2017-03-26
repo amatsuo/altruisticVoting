@@ -58,6 +58,9 @@ module.exports = {
     DG_REPEAT: 3, // dict_game repeats
     PG_REPEAT: 2, // public_goods_game repeats
 
+    // cost of vote
+    cost_vote: 5,
+
     //Encryption settings
     CRYPT: {
       key: '0123456789abcdef0123456789abcdef',

@@ -72,7 +72,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         frame: 'instructions_PG.html',
         cb: function() {
           node.on.data('group', function(msg) {
-            // Make the dictator display visible.            
+            // Make the dictator display visible.
             W.setInnerHTML('my_group', msg.data);
 
           });
@@ -304,7 +304,12 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('instructions_VotingGame', {
-        frame: 'instructions_VotingGame.html'
+        frame: 'instructions_VotingGame.html',
+        cb: function (){
+          node.on.data("cost_info", function(msg) {
+            W.setInnerHTML("cost_vote", msg.data.cost_vote);
+          });
+        }
     });
 
     stager.extendStep('votingGame', {
@@ -325,6 +330,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             var other_group = my_group == "Klee" ? "Kandinsky" : "Klee";
             W.setInnerHTML('myGroup', my_group);
             W.setInnerHTML('otherGroup', other_group);
+
+            W.setInnerHTML('cost_vote', msg.data.cost_vote);
 
             var my_group_assignment = msg.data.g_assignment[my_group];
             var other_group_assignment = msg.data.g_assignment[other_group];
@@ -380,7 +387,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             outcome = "The tax proposal <b>did not pass</b>";
           }
           W.setInnerHTML("outcome", outcome);
-          var cost_vote = 20;
+          var cost_vote = msg.data.cost_vote;
           var c_high_low = msg.data.c_high_low;
           var c_tax = msg.data.c_tax;
           var voted = 1;

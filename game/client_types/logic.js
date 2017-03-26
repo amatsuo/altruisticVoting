@@ -281,6 +281,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('instructions_VotingGame', {
       cb: function() {
           console.log('Instructions Voting Game.');
+          node.game.pl.each(function(p) {
+            node.say('cost_info', p.id, {
+              cost_vote: settings.cost_vote
+            });
+          });
       }
   });
 
@@ -329,7 +334,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             my_group: my_group,
             g_assignment: g_assignment,
             c_high_low: c_high_low,
-            c_tax: c_tax
+            c_tax: c_tax,
+            cost_vote: settings.cost_vote
           });
       }
       node.game.votes = {
@@ -370,6 +376,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       node.game.pl.each(function(p) {
         node.say('vote_results', p.id, {
           passed: passed,
+          cost_vote: settings.cost_vote,
           votes: node.game.votes,
           myvote: node.game.indvotes[p.id],
           c_high_low: node.game.c_high_low,

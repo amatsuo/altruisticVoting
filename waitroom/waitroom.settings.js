@@ -72,7 +72,7 @@ module.exports = {
      *
      * Time and date of the start of the game.
      *
-     * Overrides `MAX_WAIT_TIME`. 
+     * Overrides `MAX_WAIT_TIME`.
      *
      * Accepted values: any valid argument to `Date` constructor.
      */
