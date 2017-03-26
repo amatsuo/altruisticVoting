@@ -231,7 +231,7 @@ function endgame() {
     console.log('FINAL PAYOFF PER PLAYER');
     console.log('***********************');
     var CryptoJS = require("crypto-js");
-    var key = CryptoJS.enc.Hex.parse(settings.CRYPT.key);
+    var crypt_key = CryptoJS.enc.Hex.parse(settings.CRYPT.key);
     var iv =  CryptoJS.enc.Hex.parse(settings.CRYPT.iv);
 
     bonus = node.game.pl.map(function(p) {
@@ -262,21 +262,22 @@ function endgame() {
         //     code.win = parseFloat(code.win, 10);
         // }
         code.win = sum(payments[p.id]);
-        code.outcomecode = "DG|" + payments[p.id]["DG"] +
-                          ",VG|" + payments[p.id]["VG"] +
-                          ",PG|" + payments[p.id]["PG"] +
-                          ",TT|" + sum(payments[p.id]) +
-                          ",AC|" + code.AccessCode;
+        code.outcomecode = "M2=" + payments[p.id]["DG"] +
+                          ",M3=" + payments[p.id]["PG"] +
+                          ",M4=" + payments[p.id]["VG"] +
+                          ",T=" + sum(payments[p.id]) +
+                          ",C=" + code.AccessCode;
         console.log(code.outcomecode);
         channel.registry.checkOut(p.id);
 
 
 
         //crypted
-        var encrypted = CryptoJS.AES.encrypt(code.outcomecode, key, {iv:iv});
+        var encrypted = CryptoJS.AES.encrypt(code.outcomecode, crypt_key, {iv:iv});
         //and the ciphertext put to base64
         encrypted = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-        code.encrypted = encodeURIComponent(encrypted);
+        encrypted = encodeURIComponent(encrypted);
+        code.encrypted = encrypted;
 
         node.say('WIN', p.id, {
           outcomecode: code.outcomecode,

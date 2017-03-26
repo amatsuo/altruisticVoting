@@ -47,6 +47,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         // Setup page: header + frame.
         header = W.generateHeader();
         frame = W.generateFrame();
+        W.setHeaderPosition('top');
 
         // Add widgets.
         this.visualRound = node.widgets.append('VisualRound', header);
@@ -58,12 +59,17 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         // this.debugInfo = node.widgets.append('DebugInfo', header)
     });
 
-    stager.extendStep('instructions', {
-        frame: 'instructions2.html',
-    });
+    // Commented out because the general instructions are moved to Qualtrics survey
+    // stager.extendStep('instructions', {
+    //     frame: 'instructions2.html',
+    // });
 
     stager.extendStep('instructions_KK', {
         frame: 'instructions_KK.html'
+    });
+
+    stager.extendStep('instructions_PG', {
+        frame: 'instructions_PG.html'
     });
 
     stager.extendStep('kkpair_choice', {
@@ -224,8 +230,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('instructions_DG', {
         frame: 'instructions_DG.html',
-        timer: settings.TIMER.instructions_DG,
-
+        timer: settings.TIMER.instructions_DG
     });
 
     stager.extendStep('dict_game', {
@@ -480,7 +485,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.visualTimer.setToZero();
         node.on.data('WIN', function(msg) {
           var URL;
-          URL = node.game.settings.survey_link + "?" + "sec=" + msg.data.encrypted;
+          URL = node.game.settings.survey_link + "?" + "m=" + msg.data.encrypted;
           W.getElementById("survey_link").setAttribute('href', URL);
 
           // W.setInnerHTML('group2', msg.data);

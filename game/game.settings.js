@@ -60,15 +60,15 @@ module.exports = {
 
     //Encryption settings
     CRYPT: {
-      key: '20161215a',
-      iv: '20161215b',
+      key: '0123456789abcdef0123456789abcdef',
+      iv: 'abcdef9876543210abcdef9876543210',
     },
 
     //post experimental survey link
     survey_link: 'https://lse.eu.qualtrics.com/jfe/form/SV_8iwUHnPrPvlVgGN',
 
     // Number of participants in each group
-    GROUP_SIZE: 6,
+    GROUP_SIZE: 9,
 
     DG_TOKENS: 100,
 

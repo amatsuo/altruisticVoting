@@ -5,8 +5,8 @@ block extraHead
 
 block mainContent
     div(id='container')
-        h1=instructions
-        h2=please
+        h2=instructions
+        h4=please
         div(id='instructions') 
             !=thisGame
             br
@@ -22,6 +22,9 @@ block mainContent
             br
             br
             !=election
+            br
+            br
+            !=cost_vote
             br
             div.example!=example1
                 ul

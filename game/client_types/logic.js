@@ -36,36 +36,53 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.setOnInit(cbs.init);
 
-  stager.extendStep('instructions', {
-      cb: function() {
-        node.game.payround_exact = [];
-        node.game.payround = {};
-        node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
-        node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
-        node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
-        console.log("payrounds: %o", node.game.payround);
-
-        console.log('Instructions.');
-      }
-  });
+  // commented out
+  // stager.extendStep('instructions', {
+  //     cb: function() {
+  //       node.game.payround_exact = [];
+  //       node.game.payround = {};
+  //       node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+  //       node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+  //       node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+  //       console.log("payrounds: %o", node.game.payround);
+  //
+  //       console.log('Instructions.');
+  //     }
+  // });
 
 
   stager.extendStep('instructions_KK', {
       cb: function() {
-        //let's do some test
-        // var gs = node.game.payround_exact[0];
-        // var db = node.game.memory.stage[gs];
-        // console.log("check db contents");
-        // if (db && db.size()) {
-        //   console.log(db.size());
-        //   console.log("%o", db.db);
-        //   console.log(db.db[0].player);
-        //   console.log(db.db[0].my_amount);
-        //   console.log(db.db[1].player);
-        //   console.log(db.db[1].my_amount);
-        //
-        // }
           console.log('Instructions KK.');
+          var CryptoJS = require("crypto-js");
+          var key = CryptoJS.enc.Hex.parse(settings.CRYPT.key);
+          var iv =  CryptoJS.enc.Hex.parse(settings.CRYPT.iv);
+          console.log(key);
+          console.log(iv);
+
+          // var secret = "M2a=120,M2b=130,M2=110,M3=100,M4R=120,M4=120,T=1301,C=EWKD3EbkhOmwsFp9";
+          var secret = "M2=101,M3=1,M4=80,T=182,C=undefined";
+          //crypted
+          var encrypted = CryptoJS.AES.encrypt(secret, key, {iv:iv});
+          //and the ciphertext put to base64
+          encrypted = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+          encrypted = encodeURIComponent(encrypted);
+          console.log(encrypted);
+
+          // payround for each module is selected here.
+          // moved from general instructions
+          node.game.payround_exact = [];
+          node.game.payround = {};
+          node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
+          node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
+          node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+          console.log("payrounds: %o", node.game.payround);
+      }
+  });
+
+  stager.extendStep('instructions_PG', {
+      cb: function() {
+          console.log('Instructions PG.');
       }
   });
 
@@ -122,7 +139,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         } else {
           node.game.indtokens[msg.from] = 1;
         }
-        console.log(cgroup + node.game.grouptokens[cgroup]);
+        // console.log(cgroup + node.game.grouptokens[cgroup]);
         node.game.pl.each(function(p) {
           var res_group = node.game.kkgroup[p.id];
           //console.log("round_info: %o", messageData);
@@ -268,9 +285,18 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       console.log('votingGame, Round ', gs.round);
 
       var high_lows = [[60, 140], [80, 120], [70, 130]];
-      var tax_proposals = [20, 10];
       var c_high_low = shuffle(high_lows)[0];
       node.game.c_high_low = c_high_low;
+      var tax_proposals;
+      if(c_high_low[0] == 60) {
+        tax_proposals = [40, 30, 20, 10];
+      }
+      if(c_high_low[0] == 80) {
+        tax_proposals = [20, 10];
+      }
+      if(c_high_low[0] == 70) {
+        tax_proposals = [30, 20, 10];
+      }
       var c_tax = shuffle(tax_proposals)[0];
       node.game.c_tax = c_tax;
       //console.log(c_high_low);
