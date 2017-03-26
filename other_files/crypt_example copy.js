@@ -2,7 +2,7 @@ var CryptoJS = require("crypto-js");
 var key = CryptoJS.enc.Hex.parse("0123456789abcdef0123456789abcdef");
 var iv =  CryptoJS.enc.Hex.parse("abcdef9876543210abcdef9876543210");
 
-var secret = "M2a=120,M2b=130,M2=110,M3=100,M4R=120,M4=120,T=1300,C=EWKD3EbkhOmwsFp9";
+var secret = "M2a=20&M2b=30&M2=110&M3=100&M4R=20&M4=120&T=300&c=";
 
 //crypted
 var encrypted = CryptoJS.AES.encrypt(secret, key, {iv:iv});
