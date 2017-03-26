@@ -54,20 +54,20 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('instructions_KK', {
       cb: function() {
           console.log('Instructions KK.');
-          var CryptoJS = require("crypto-js");
-          var key = CryptoJS.enc.Hex.parse(settings.CRYPT.key);
-          var iv =  CryptoJS.enc.Hex.parse(settings.CRYPT.iv);
-          console.log(key);
-          console.log(iv);
-
-          // var secret = "M2a=120,M2b=130,M2=110,M3=100,M4R=120,M4=120,T=1301,C=EWKD3EbkhOmwsFp9";
-          var secret = "M2=101,M3=1,M4=80,T=182,C=undefined";
-          //crypted
-          var encrypted = CryptoJS.AES.encrypt(secret, key, {iv:iv});
-          //and the ciphertext put to base64
-          encrypted = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-          encrypted = encodeURIComponent(encrypted);
-          console.log(encrypted);
+          // var CryptoJS = require("crypto-js");
+          // var key = CryptoJS.enc.Hex.parse(settings.CRYPT.key);
+          // var iv =  CryptoJS.enc.Hex.parse(settings.CRYPT.iv);
+          // console.log(key);
+          // console.log(iv);
+          //
+          // // var secret = "M2a=120,M2b=130,M2=110,M3=100,M4R=120,M4=120,T=1301,C=EWKD3EbkhOmwsFp9";
+          // var secret = "M2=101,M3=1,M4=80,T=182,C=undefined";
+          // //crypted
+          // var encrypted = CryptoJS.AES.encrypt(secret, key, {iv:iv});
+          // //and the ciphertext put to base64
+          // encrypted = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+          // encrypted = encodeURIComponent(encrypted);
+          // console.log(encrypted);
 
           // payround for each module is selected here.
           // moved from general instructions

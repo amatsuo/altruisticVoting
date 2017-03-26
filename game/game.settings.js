@@ -41,11 +41,11 @@ module.exports = {
      * used to initialize the game timer for the step.
      */
     TIMER: {
-        instructions: 120000,
+        instructions: 120000, //
         votingGame: 45000,
         votingResult: 30000,
-        number_addition_game: 15000,
-        number_addition_results: 30000,
+        number_addition_game: 15000, // change
+        number_addition_results: 30000, // change
         instructions_DG: 120000,
         dict_games: 45000,
 
@@ -55,7 +55,7 @@ module.exports = {
 
     // Numnber of game rounds repetitions.
     VG_REPEAT: 2, // votingGame repeats
-    DG_REPEAT: 2, // dict_game repeats
+    DG_REPEAT: 3, // dict_game repeats
     PG_REPEAT: 2, // public_goods_game repeats
 
     //Encryption settings
