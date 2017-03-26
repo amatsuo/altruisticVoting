@@ -83,6 +83,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('instructions_PG', {
       cb: function() {
           console.log('Instructions PG.');
+          var id;
+          for (id in node.game.kkgroup) {
+            // console.log(id + node.game.kkgroup[id]);
+            node.say("group", id, node.game.kkgroup[id]);
+          }
       }
   });
 

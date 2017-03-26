@@ -47,7 +47,7 @@ module.exports = {
         number_addition_game: 15000, // change
         number_addition_results: 30000, // change
         instructions_DG: 120000,
-        dict_games: 45000,
+        dict_game: 45000,
 
     },
 

@@ -69,7 +69,14 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('instructions_PG', {
-        frame: 'instructions_PG.html'
+        frame: 'instructions_PG.html',
+        cb: function() {
+          node.on.data('group', function(msg) {
+            // Make the dictator display visible.            
+            W.setInnerHTML('my_group', msg.data);
+
+          });
+        }
     });
 
     stager.extendStep('kkpair_choice', {
