@@ -3,9 +3,12 @@
 
 //Here we have the key and iv which we know, because we have just chosen them on the JS,
 //the pack acts just like the parse Hex from JS
+$key = $_GET["key"];
+$iv = $_GET["iv"];
 
-$key = pack("H*", "0123456789abcdef0123456789abcdef");
-$iv =  pack("H*", "abcdef9876543210abcdef9876543210");
+
+$key = pack("H*", $key);
+$iv =  pack("H*", $iv);
 
 //Now we receive the encrypted from the post, we should decode it from base64,
 $str0 = $_GET["encrypted"];

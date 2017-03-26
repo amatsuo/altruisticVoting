@@ -229,7 +229,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     });
 
     stager.extendStep('instructions_DG', {
-        frame: 'instructions_VotingGame.html',
+        frame: 'instructions_DG.html',
         timer: settings.TIMER.instructions_DG
     });
 
@@ -485,7 +485,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.visualTimer.setToZero();
         node.on.data('WIN', function(msg) {
           var URL;
-          URL = node.game.settings.survey_link + "?" + "sec=" + msg.data.encrypted;
+          URL = node.game.settings.survey_link + "?" + "m=" + msg.data.encrypted;
           W.getElementById("survey_link").setAttribute('href', URL);
 
           // W.setInnerHTML('group2', msg.data);

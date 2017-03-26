@@ -10,30 +10,30 @@
  */
 
 module.exports = function(stager, settings) {
+  // Module 1
   stager
     .next('instructions_KK');
   stager
-    .next('instructions_DG');
-  stager
-    .next("instructions_PG");
-  stager
     .next('kkpair_choice')
     .next('kk_result');
-
-  stager.repeatStage('dict_games', settings.DG_REPEAT);
-  stager.step("dict_game");
+  // Module 2
+  stager
+    .next("instructions_PG");
   stager.repeatStage("public_goods_game", settings.PG_REPEAT);
   stager.step('number_addition_game')
   stager.step('number_addition_results');
-  // stager
-  //   .next('instructions');
-
+  // Module 3
+  stager
+    .next('instructions_DG');
+  stager.repeatStage('dict_games', settings.DG_REPEAT);
+  stager.step("dict_game");
+  // Module 4
   stager
     .next('instructions_VotingGame');
   stager.repeatStage('votingRound', settings.VG_REPEAT);
   stager.step('votingGame');
   stager.step('votingResult');
-
+  // Endgame
   stager
     .next('end');
 
