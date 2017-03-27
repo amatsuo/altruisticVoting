@@ -16,3 +16,5 @@ data
 node_modules
 .DS_Store
 
+auth/codes.imported.csv
+auth/codes.imported.csv.bak
