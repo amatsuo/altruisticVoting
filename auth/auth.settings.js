@@ -85,7 +85,7 @@ module.exports = {
      * Modes: 'local'
      * Default: 'codes.json', 'code.csv' (tried in sequence)
      */
-    inFile: 'codes.imported.csv',
+    inFile: 'codes.csv',
 
     /**
      * ## dumpCodes
@@ -119,7 +119,7 @@ module.exports = {
      *
      * Modes: 'dummy', 'auto', 'local', 'remote', 'custom'
      */
-    // codes: 'auth.codes.js',
+    codes: 'auth.codes.js',
 
     // # Reserved words for future requirements settings.
 

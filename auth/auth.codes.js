@@ -52,7 +52,7 @@ module.exports = function(settings, done) {
         for (i = 0 ; i < nCodes; i ++) {
             codes[i] = {
                 id: i + '',
-                AccessCode: i + '',
+                AccessCode: i + '_ac',
                 ExitCode: i + 'exit'
             };
             // Optionally add a password field.
@@ -195,7 +195,7 @@ module.exports = function(settings, done) {
         return;
     }
 
-  
+
 
     throw new Error('Unknown authorization mode: ' + settings.mode);
 
