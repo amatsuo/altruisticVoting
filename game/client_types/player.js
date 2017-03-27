@@ -249,7 +249,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         var otherGroup = node.game.mygroup == "Klee" ? "Kandinsky" : "Klee";
         var recipient_msgs = {
           "Anonymous" : 'You know nothing about this anonymous individual.',
-          "Peer" : 'The only thing you know about this individual is that he or she is a member of your <strong>' +
+          "Peer" : 'The only thing you know about this individual is that he or she is a member of <strong>your ' +
            node.game.mygroup + " group</strong>.",
           "Other" : 'The only thing you know about this individual is that he or she is a member of <strong>' +
            otherGroup + " group</strong>."
@@ -282,25 +282,49 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             $('.modal-backdrop').remove();
           }
           else {
-            send.disabled = true;
-            b.disabled = true;
-            W.writeln(' Waiting for the decision of other players',
-                      W.getElementById('dictGame'));
-            node.say('send', recipient, valueS);
-            node.on.data('send', function(msg){
-              valueR = msg.data;
-              node.done({
-                my_amount: 100 - valueS + valueR ,
-                sent_value: valueS,
-                received_value: valueR,
-                recipient: recipient
-              });
-              node.say('send', recipient, valueS);
+            node.say('send', "SERVER", {
+              recipient: recipient,
+              value: valueS});
+            node.done({
+              sent_value: valueS,
+              recipient: recipient
             });
+            // send.disabled = true;
+            // b.disabled = true;
+            // W.writeln(' Waiting for the decision of other players',
+            //           W.getElementById('dictGame'));
+            // node.say('send', recipient, valueS);
+            // node.on.data('send', function(msg){
+            //   valueR = msg.data;
+            //   node.done({
+            //     my_amount: 100 - valueS + valueR ,
+            //     sent_value: valueS,
+            //     received_value: valueR,
+            //     recipient: recipient
+            //   });
+            //   node.say('send', recipient, valueS);
+            // });
           }
         };
 
       }
+    });
+
+    stager.extendStep('dict_game_result', {
+        donebutton: false,
+        frame: 'dict_game_result.html',
+        cb: function () {
+          var stage_data;
+          node.on.data("dg_result", function(msg) {
+            console.log("%o", msg.data);
+            stage_data = msg.data;
+          });
+          var b = W.getElementById("goNext");
+          b.onclick = function(){
+            node.done(stage_data);
+          };
+
+        }
     });
 
     stager.extendStep('instructions_VotingGame', {

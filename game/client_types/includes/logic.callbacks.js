@@ -43,8 +43,8 @@ function init() {
     DUMP_DIR = path.resolve(channel.getGameDir(), 'data') + '/' + counter + '/';
 
     fs.mkdirsSync(DUMP_DIR);
-
-    console.log('********************** ultimatum room ' + counter++ +
+    // console.log("DUMP_DIR" + DUMP_DIR);
+    console.log('********************** altruisticVoting room ' + counter++ +
                 ' **********************');
 
     // Create matcher and matches.

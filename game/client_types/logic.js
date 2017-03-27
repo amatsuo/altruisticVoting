@@ -194,10 +194,11 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     cb: function() {
       console.log('Instructions Dicataor Game.');
       var game_orders = ["Other", "Anonymous", "Peer"];
-      game_orders = shuffle(game_orders);
+      //game_orders = shuffle(game_orders);
 
       node.game.dg_orders = game_orders;
       node.game.dg_payround = parseInt(Math.random() * 3 + 1);
+      node.game.dg_data = {};
       console.log(game_orders);
     }
   });
@@ -205,13 +206,14 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   stager.extendStep('dict_game', {
     cb: function() {
       var current = this.getCurrentGameStage();
-      //console.log(current.round);
-      var gs = this.getCurrentGameStage();
-      var dg_payround = node.game.payround.DG;
-      if(dg_payround == gs.round) {
-        node.game.payround_exact.push(["DG", gs]);
-        console.log("This is a payround");
-      }
+      node.game.dg_data[current.round] = {sent: {}, received: {}};
+      // //console.log(current.round);
+      // var gs = this.getCurrentGameStage();
+      // var dg_payround = node.game.payround.DG;
+      // if(dg_payround == gs.round) {
+      //   node.game.payround_exact.push(["DG", gs]);
+      //   console.log("This is a payround");
+      // }
       var game_type = node.game.dg_orders[current.round - 1];
       console.log('dictator game round', current.round);
       console.log('dictator game type', game_type);
@@ -274,9 +276,43 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           node.say('recipient' , playerB, [playerA, game_type]);
         }
       }
+      // receive the messages about the amount they send
+      node.on.data("send", function(msg){
+        // console.log("get_send_msg: %o", msg);
+        node.game.dg_data[current.round].sent[msg.from] = msg.data.value;
+        node.game.dg_data[current.round].received[msg.data.recipient] = msg.data.value;
+      });
     }
   });
 
+  stager.extendStep('dict_game_result', {
+    cb: function() {
+      console.log('Dictator Game Result.');
+      var current = this.getCurrentGameStage();
+      //console.log(current.round);
+      var gs = this.getCurrentGameStage();
+      console.log("sent: %o", node.game.dg_data[current.round].sent);
+      console.log("received: %o", node.game.dg_data[current.round].received);
+      node.game.pl.each(function(p) {
+        var sent_val, received_val;
+        sent_val = node.game.dg_data[current.round].sent[p.id] === undefined ?
+          0 : node.game.dg_data[current.round].sent[p.id];
+        received_val = node.game.dg_data[current.round].received[p.id] === undefined ?
+          0 : node.game.dg_data[current.round].received[p.id];
+
+        node.say('dg_result', p.id, {
+          my_amount: 100 - sent_val + received_val ,
+          sent_value: sent_val,
+          received_value: received_val
+        });
+      });
+      var dg_payround = node.game.payround.DG;
+      if(dg_payround == gs.round) {
+        node.game.payround_exact.push(["DG", gs]);
+        console.log("This is a payround");
+      }
+    }
+  });
 
   stager.extendStep('instructions_VotingGame', {
       cb: function() {
