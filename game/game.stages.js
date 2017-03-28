@@ -16,18 +16,18 @@ module.exports = function(stager, settings) {
     stager
       .next('kkpair_choice')
       .next('kk_result');
-    // Module 3
-    stager
-      .next('instructions_DG');
-    stager.repeatStage('dict_games', settings.DG_REPEAT);
-    stager.step("dict_game");
-    stager.step("dict_game_result");
     // Module 2
     stager
       .next("instructions_PG");
     stager.repeatStage("public_goods_game", settings.PG_REPEAT);
     stager.step('number_addition_game')
     stager.step('number_addition_results');
+    // Module 3
+    stager
+      .next('instructions_DG');
+    stager.repeatStage('dict_games', settings.DG_REPEAT);
+    stager.step("dict_game");
+    stager.step("dict_game_result");
     // Module 4
     stager
       .next('instructions_VotingGame');
