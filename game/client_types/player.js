@@ -274,7 +274,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           var valueR=0;
           var send = W.getElementById('Send');
           var valueS = send.value;
-          valueS = JSUS.isInt(valueS, 0, node.game.settings.CANTIDAD);
+          valueS = JSUS.isInt(valueS, 0, node.game.settings.DG_TOKENS);
 
           if ( valueS === false ) {
             var modal = W.getElementById("ERROR");

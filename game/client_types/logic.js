@@ -436,6 +436,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       cb: function() {
           node.game.memory.save(channel.getGameDir() + 'data/data_' +
                                 node.nodename + '.json');
+          node.game.memory.save(node.game.DUMP_DIR + 'data_all_' +
+                                node.nodename + '.json');
           cbs.endgame();
       }
   });

@@ -43,7 +43,7 @@ var current_epoch = currentdate.getTime();
 
 function init() {
     DUMP_DIR = path.resolve(channel.getGameDir(), 'data') + '/session_' + current_epoch + '/';
-
+    node.game.DUMP_DIR = DUMP_DIR;
     fs.mkdirsSync(DUMP_DIR);
     // console.log("DUMP_DIR" + DUMP_DIR);
     console.log('********************** altruisticVoting room ' + current_epoch +
