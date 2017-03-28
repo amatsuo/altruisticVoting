@@ -22,10 +22,11 @@ module.exports = function(settings, stages) {
 
     setup.debug = true;
 
-    setup.verbosity = 1;
+    setup.verbosity = 0;
 
     setup.window = {
-        promptOnleave: !setup.debug
+        promptOnleave: !setup.debug,
+        disableBackButton: !setup.debug
     }
 
     // Metadata. Taken from package.json. Can be overwritten.

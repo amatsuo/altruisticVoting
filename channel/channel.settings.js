@@ -43,7 +43,7 @@ module.exports = {
      * to use the real channel name, so you might need to pass it explicitly:
      * `node.connect('/gameName').
      */
-    // alias: [],
+    //alias: ['akcrowd_vc'],
 
     /**
      * ## playerServer (object|string) Optional
