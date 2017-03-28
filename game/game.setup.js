@@ -20,7 +20,7 @@ module.exports = function(settings, stages) {
         auto: false
     };
 
-    setup.debug = true;
+    setup.debug = false;
 
     setup.verbosity = 0;
 

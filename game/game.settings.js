@@ -50,7 +50,7 @@ module.exports = {
         kk_result: 60000,
         votingGame: 60000,
         votingResult: 60000,
-        number_addition_game: 15000, //change
+        number_addition_game: 30000, //change
         number_addition_results: 60000,
         dict_game: 60000,
         dict_game_result: 60000,
@@ -59,9 +59,9 @@ module.exports = {
     // # Game specific properties
 
     // Numnber of game rounds repetitions.
-    VG_REPEAT: 2, // votingGame repeats
+    VG_REPEAT: 20, // votingGame repeats
     DG_REPEAT: 3, // dict_game repeats
-    PG_REPEAT: 2, // public_goods_game repeats
+    PG_REPEAT: 3, // public_goods_game repeats
 
     // cost of vote
     cost_vote: 5,
