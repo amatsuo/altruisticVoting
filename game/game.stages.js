@@ -19,7 +19,8 @@ module.exports = function(stager, settings) {
     // Module 2
     stager
       .next("instructions_PG");
-    stager.repeatStage("public_goods_game", settings.PG_REPEAT);
+    stager.repeatStage("public_goods_game", settings.PG_REPEAT + 1);
+    //include practice round
     stager.step('number_addition_game')
     stager.step('number_addition_results');
     // Module 3

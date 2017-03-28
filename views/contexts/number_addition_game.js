@@ -2,8 +2,8 @@ module.exports = function(settings, headers) {
 
     //var value=settings.standard.CANTIDAD,unidad=settings.standard.UNIDAD_ESTANDAR;
     return {
-        title: "Module",
-        Module: "Module ",
+        title: "Module 2",
+        Module: "Module 2",
         groupTokensText: "Total tokens of your <b id='group'>&nbsp;</b> group: ",
         myTokensText: "Tokens you have contributed: ",
         // num1: Math.floor(Math.random()*(99-10)+10), // the nubmers are supplied by cb:

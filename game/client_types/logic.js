@@ -77,7 +77,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           node.game.payround = {};
           node.game.payround.DG = shuffle(range(1, settings.DG_REPEAT))[0];
           node.game.payround.VG = shuffle(range(1, settings.VG_REPEAT))[0];
-          node.game.payround.PG = shuffle(range(1, settings.PG_REPEAT))[0];
+          node.game.payround.PG = shuffle(range(2, settings.PG_REPEAT + 1))[0]; // include practice round
           console.log("payrounds: %o", node.game.payround);
       }
   });
@@ -135,7 +135,12 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       console.log('Number addition game.');
       // var gs = this.getCurrentGameStage();
       // console.log("gs: %o", gs);
-
+      var gs_round = this.getCurrentGameStage().round;
+      if (gs_round === 1) {
+        node.game.pl.each(function(p) {
+          node.say('practice', p.id, 1);
+        });
+      }
       node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
       node.game.indtokens = {};
       node.on.data('correct', function(msg){
@@ -160,6 +165,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
   stager.extendStep('number_addition_results', {
     cb: function() {
+      var gs_round = this.getCurrentGameStage().round;
+      if (gs_round === 1) {
+        node.game.pl.each(function(p) {
+          node.say('practice', p.id, 1);
+        });
+      }
+
       var gs = this.getCurrentGameStage();
       var pg_payround = node.game.payround.PG;
       if(pg_payround == gs.round) {

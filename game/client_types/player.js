@@ -155,6 +155,9 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       timer: settings.TIMER.number_addition_game,
 
       cb: function() {
+        node.on.data("practice", function(msg){
+          W.setInnerHTML('round', "<strong>This is a practice round<strong>");
+        });
         var num1, num2;
         // show initial set of numbers
         num1 = Math.floor(Math.random()*(99-10)+10);
@@ -221,6 +224,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
         cb: function() {
           var stage_data = {};
+          node.on.data("practice", function(msg){
+            W.setInnerHTML('round', "<strong>This is a practice round<strong>");
+          });
+
           node.on.data('na_results', function(msg) {
             stage_data.myGroupTokens = msg.data[0];
             stage_data.my_amount = msg.data[0];
