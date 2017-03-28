@@ -65,11 +65,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     // });
 
     stager.extendStep('instructions_KK', {
-        frame: 'instructions_KK.html'
+        frame: 'instructions_KK.html',
+        timer: settings.TIMER.instructions_KK,
     });
 
     stager.extendStep('instructions_PG', {
         frame: 'instructions_PG.html',
+        timer: settings.TIMER.instructions_PG,
         cb: function() {
           node.on.data('group', function(msg) {
             // Make the dictator display visible.
@@ -81,6 +83,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('kkpair_choice', {
         donebutton: false,
+        timer: settings.TIMER.kkpair_choice,
+
         frame: 'kkpair_choice.html',
         cb: function() {
 
@@ -130,6 +134,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('kk_result', {
       frame: 'kk_result.html',
+      timer: settings.TIMER.kk_result,
+
       cb: function() {
         node.on.data('group', function(msg) {
           // Make the dictator display visible.
@@ -331,6 +337,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('instructions_VotingGame', {
         frame: 'instructions_VotingGame.html',
+        timer: settings.TIMER.instructions_VotingGame,
         cb: function (){
           node.on.data("cost_info", function(msg) {
             W.setInnerHTML("cost_vote", msg.data.cost_vote);
