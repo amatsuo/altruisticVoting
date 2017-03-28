@@ -255,11 +255,14 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
            otherGroup + " group</strong>."
         };
         var recipient;
+        var stage_data;
 
         node.on.data('recipient', function(msg) {
+          stage_data = msg.data;
           var recp_text = recipient_msgs[msg.data[1]];
           recipient = msg.data[0];
           // // Make the dictator display visible.
+          W.setInnerHTML('you', "You are a member of <strong>"+ node.game.mygroup+"</strong>");
           W.setInnerHTML('recipient', recp_text);
           // W.setInnerHTML('group2', msg.data);
           // W.setInnerHTML('group3', msg.data);
@@ -285,10 +288,9 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             node.say('send', "SERVER", {
               recipient: recipient,
               value: valueS});
-            node.done({
-              sent_value: valueS,
-              recipient: recipient
-            });
+            stage_data.sent_value = valueS;
+            stage_data.recipient = recipient;
+            node.done(stage_data);
             // send.disabled = true;
             // b.disabled = true;
             // W.writeln(' Waiting for the decision of other players',
