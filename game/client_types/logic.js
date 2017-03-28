@@ -13,6 +13,7 @@ var ngc = require('nodegame-client');
 var stepRules = ngc.stepRules;
 var constants = ngc.constants;
 var counter = 0;
+var nocache = true;
 
 module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
@@ -22,7 +23,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
   // Must implement the stages here.
 
   // Increment counter.
-  counter = counter ? ++counter : settings.SESSION_ID || 1;
+  counter = counter ? ++counter : settings.SESSION_ID;
 
   // Import other functions used in the game.
   // Some objects are shared.
@@ -32,9 +33,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       settings: settings,
       counter: counter
       // Reference to channel added by default.
-  });
+  }, nocache);
 
   stager.setOnInit(cbs.init);
+
 
   // commented out
   // stager.extendStep('instructions', {
@@ -99,10 +101,10 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     cb: function() {
       node.on.data('score', function(msg){
         node.game.kkscore.push([msg.from, msg.data]);
-        console.log(node.game.kkscore[node.game.kkscore.length - 1]);
+        //console.log(node.game.kkscore[node.game.kkscore.length - 1]);
       });
 
-      console.log('kkpair choice.');
+      //console.log('kkpair choice.');
     }
   });
 
@@ -118,7 +120,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       for(var i = 0; i < npart; i ++){
         var gr = (i < npart / 2) ? "Klee" : "Kandinsky"
         node.game.kkgroup[sorted[i][0]] = gr;
-        console.log([sorted[i][0], gr]);
+        //console.log([sorted[i][0], gr]);
         node.say("group", sorted[i][0], gr);
       }
     },
