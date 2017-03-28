@@ -38,13 +38,15 @@ var channel = module.parent.exports.channel;
 var gameRoom = module.parent.exports.gameRoom;
 var settings = module.parent.exports.settings;
 var counter = module.parent.exports.counter;
+var currentdate = new Date();
+var current_epoch = currentdate.getTime();
 
 function init() {
-    DUMP_DIR = path.resolve(channel.getGameDir(), 'data') + '/' + counter + '/';
-
+    DUMP_DIR = path.resolve(channel.getGameDir(), 'data') + '/session_' + current_epoch + '/';
+    node.game.DUMP_DIR = DUMP_DIR;
     fs.mkdirsSync(DUMP_DIR);
-
-    console.log('********************** ultimatum room ' + counter++ +
+    // console.log("DUMP_DIR" + DUMP_DIR);
+    console.log('********************** altruisticVoting room ' + current_epoch +
                 ' **********************');
 
     // Create matcher and matches.
@@ -77,27 +79,26 @@ function init() {
         // Update last stage reference.
         node.game.lastStage = currentStage;
 
-        for (p in node.game.lastBids) {
-            if (node.game.lastBids.hasOwnProperty(p)) {
-
-                // Respondent payoff.
-                code = channel.registry.getClient(p);
-
-                gain = node.game.lastBids[p];
-                if (gain) {
-                    code.win = !code.win ? gain : code.win + gain;
-                    console.log('Added to ' + p + ' ' + gain + ' ECU');
-                }
-            }
-        }
+        // for (p in node.game.lastBids) {
+        //     if (node.game.lastBids.hasOwnProperty(p)) {
+        //
+        //         // Respondent payoff.
+        //         code = channel.registry.getClient(p);
+        //
+        //         gain = node.game.lastBids[p];
+        //         if (gain) {
+        //             code.win = !code.win ? gain : code.win + gain;
+        //             console.log('Added to ' + p + ' ' + gain + ' ECU');
+        //         }
+        //     }
+        // }
 
         db = node.game.memory.stage[currentStage];
 
         if (db && db.size()) {
-
             prefix = DUMP_DIR + 'memory_' + currentStage;
             db.save(prefix + '.csv', { flags: 'w' });
-            db.save(prefix + '.nddb', { flags: 'w' });
+            db.save(prefix + '.json', { flags: 'w' });
 
             console.log('Round data saved ', currentStage);
         }
@@ -262,8 +263,8 @@ function endgame() {
         //     code.win = parseFloat(code.win, 10);
         // }
         code.win = sum(payments[p.id]);
-        code.outcomecode = "M2=" + payments[p.id]["DG"] +
-                          ",M3=" + payments[p.id]["PG"] +
+        code.outcomecode = "M2=" + payments[p.id]["PG"] +
+                          ",M3=" + payments[p.id]["DG"] +
                           ",M4=" + payments[p.id]["VG"] +
                           ",T=" + sum(payments[p.id]) +
                           ",C=" + code.AccessCode;
@@ -302,8 +303,8 @@ function endgame() {
     bonusFile.on('error', function(err) {
         console.log('Error while saving bonus file: ', err);
     });
-    bonusFile.write(["access", "exit", "DG", "TG", "PG", "TT", "access2",
-                    "outcomecode_encrypted", "bonus", "terminated"].join(', ') + '\n');
+    bonusFile.write(["access", "exit", "bonus", "PG", "DG", "TG", "Total", "Exit",
+                    "outcomecode_encrypted", "terminated"].join(', ') + '\n');
     bonus.forEach(function(v) {
         bonusFile.write(v.join(', ') + '\n');
     });

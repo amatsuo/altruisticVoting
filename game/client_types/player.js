@@ -65,11 +65,13 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
     // });
 
     stager.extendStep('instructions_KK', {
-        frame: 'instructions_KK.html'
+        frame: 'instructions_KK.html',
+        timer: settings.TIMER.instructions_KK,
     });
 
     stager.extendStep('instructions_PG', {
         frame: 'instructions_PG.html',
+        timer: settings.TIMER.instructions_PG,
         cb: function() {
           node.on.data('group', function(msg) {
             // Make the dictator display visible.
@@ -81,6 +83,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('kkpair_choice', {
         donebutton: false,
+        timer: settings.TIMER.kkpair_choice,
+
         frame: 'kkpair_choice.html',
         cb: function() {
 
@@ -130,6 +134,8 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
 
     stager.extendStep('kk_result', {
       frame: 'kk_result.html',
+      timer: settings.TIMER.kk_result,
+
       cb: function() {
         node.on.data('group', function(msg) {
           // Make the dictator display visible.
@@ -249,17 +255,20 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         var otherGroup = node.game.mygroup == "Klee" ? "Kandinsky" : "Klee";
         var recipient_msgs = {
           "Anonymous" : 'You know nothing about this anonymous individual.',
-          "Peer" : 'The only thing you know about this individual is that he or she is a member of your <strong>' +
+          "Peer" : 'The only thing you know about this individual is that he or she is a member of <strong>your ' +
            node.game.mygroup + " group</strong>.",
           "Other" : 'The only thing you know about this individual is that he or she is a member of <strong>' +
            otherGroup + " group</strong>."
         };
         var recipient;
+        var stage_data;
 
         node.on.data('recipient', function(msg) {
+          stage_data = msg.data;
           var recp_text = recipient_msgs[msg.data[1]];
           recipient = msg.data[0];
           // // Make the dictator display visible.
+          W.setInnerHTML('you', "You are a member of <strong>"+ node.game.mygroup+"</strong>");
           W.setInnerHTML('recipient', recp_text);
           // W.setInnerHTML('group2', msg.data);
           // W.setInnerHTML('group3', msg.data);
@@ -274,7 +283,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           var valueR=0;
           var send = W.getElementById('Send');
           var valueS = send.value;
-          valueS = JSUS.isInt(valueS, 0, node.game.settings.CANTIDAD);
+          valueS = JSUS.isInt(valueS, 0, node.game.settings.DG_TOKENS);
 
           if ( valueS === false ) {
             var modal = W.getElementById("ERROR");
@@ -282,29 +291,53 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
             $('.modal-backdrop').remove();
           }
           else {
-            send.disabled = true;
-            b.disabled = true;
-            W.writeln(' Waiting for the decision of other players',
-                      W.getElementById('dictGame'));
-            node.say('send', recipient, valueS);
-            node.on.data('send', function(msg){
-              valueR = msg.data;
-              node.done({
-                my_amount: 100 - valueS + valueR ,
-                sent_value: valueS,
-                received_value: valueR,
-                recipient: recipient
-              });
-              node.say('send', recipient, valueS);
-            });
+            node.say('send', "SERVER", {
+              recipient: recipient,
+              value: valueS});
+            stage_data.sent_value = valueS;
+            stage_data.recipient = recipient;
+            node.done(stage_data);
+            // send.disabled = true;
+            // b.disabled = true;
+            // W.writeln(' Waiting for the decision of other players',
+            //           W.getElementById('dictGame'));
+            // node.say('send', recipient, valueS);
+            // node.on.data('send', function(msg){
+            //   valueR = msg.data;
+            //   node.done({
+            //     my_amount: 100 - valueS + valueR ,
+            //     sent_value: valueS,
+            //     received_value: valueR,
+            //     recipient: recipient
+            //   });
+            //   node.say('send', recipient, valueS);
+            // });
           }
         };
 
       }
     });
 
+    stager.extendStep('dict_game_result', {
+        donebutton: false,
+        frame: 'dict_game_result.html',
+        cb: function () {
+          var stage_data;
+          node.on.data("dg_result", function(msg) {
+            console.log("%o", msg.data);
+            stage_data = msg.data;
+          });
+          var b = W.getElementById("goNext");
+          b.onclick = function(){
+            node.done(stage_data);
+          };
+
+        }
+    });
+
     stager.extendStep('instructions_VotingGame', {
         frame: 'instructions_VotingGame.html',
+        timer: settings.TIMER.instructions_VotingGame,
         cb: function (){
           node.on.data("cost_info", function(msg) {
             W.setInnerHTML("cost_vote", msg.data.cost_vote);

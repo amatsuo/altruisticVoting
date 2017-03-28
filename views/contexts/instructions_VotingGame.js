@@ -24,6 +24,6 @@ module.exports = function(settings, headers) {
         ex2_outcome1: "<em>if tax propsal is rejected...</em><br>Your total income is gross income: <div style='text-align: center'>70 tokens</div>",
         ex2_outcome2: "<em>if tax propsal is approved...</em><br>Your total income is gross income plus the redistributed tax: <div style='text-align: center'>70 + 30 = 100 tokens</div>",
         endOfRound: "The first round ends when all participants, in both groups, finish voting and the chosen tax rate might be applied to their income. Round 2 will take place on the basis of the same rules as Round 1, and so on until the last round.<br><br><em>You will be given details about the results of the voting in each round.</em> <br><br>Module 4 will include 20 rounds, and one round is randomly selected for payment.",
-        ifYouUnderstood: "If you understood the instructions correctly press the DONE Button to proceed to the next page."
+        ifYouUnderstood: "If you understood the instructions, press the DONE Button to proceed to the next page."
     };
 };
