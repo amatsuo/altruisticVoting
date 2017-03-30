@@ -179,7 +179,6 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.correct = 0;
 
         node.on.data('tokens_update', function(msg) {
-          console.log("%o", msg.data);
           W.setInnerHTML('totalMyGroup', msg.data[myGroup]);
           W.setInnerHTML('totalOtherGroup', msg.data[otherGroup]);
         });
@@ -238,16 +237,16 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           });
 
           node.on.data('na_results', function(msg) {
-            stage_data.myGroupTokens = msg.data[0];
-            stage_data.my_amount = msg.data[0];
-            stage_data.otherGroupTokens = msg.data[1];
-            stage_data.myGroup = msg.data[2];
-            stage_data.otherGroup = msg.data[3];
-            stage_data.my_tokens = msg.data[4];
-            W.setInnerHTML('myGroupTokens', msg.data[0]);
-            W.setInnerHTML('otherGroupTokens', msg.data[1]);
-            W.setInnerHTML('myGroup', "(" + msg.data[2] + ")");
-            W.setInnerHTML('otherGroup', "(" + msg.data[3] + ")");
+            stage_data = msg.data;
+            W.setInnerHTML('myGroupAnswers', stage_data.myGroupAnswers);
+            W.setInnerHTML('otherGroupAnswers', stage_data.otherGroupAnswers);
+            W.setInnerHTML('myGroupTokens', stage_data.myGroupTokens);
+            W.setInnerHTML('otherGroupTokens', stage_data.otherGroupTokens);
+            W.setInnerHTML('myGroup', "(" + stage_data.myGroup + ")");
+            W.setInnerHTML('otherGroup', "(" + stage_data.otherGroup + ")");
+            W.setInnerHTML('myGroup2', "(" + stage_data.myGroup + ")");
+            W.setInnerHTML('otherGroup2', "(" + stage_data.otherGroup + ")");
+            W.setInnerHTML('winnerGroup', " " + stage_data.winner);
           });
           var b = W.getElementById("goNext");
           b.onclick = function(){

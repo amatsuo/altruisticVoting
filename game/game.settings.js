@@ -76,7 +76,7 @@ module.exports = {
     survey_link: 'https://lse.eu.qualtrics.com/jfe/form/SV_8iwUHnPrPvlVgGN',
 
     // Number of participants in each group
-    GROUP_SIZE: 9,
+    GROUP_SIZE: 7,
 
     DG_TOKENS: 100,
 

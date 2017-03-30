@@ -4,8 +4,8 @@ module.exports = function(settings, headers) {
     return {
         title: "Module 2",
         Module: "Module 2",
-        groupTokensText: "Total tokens of your <b id='group'>&nbsp;</b> group: ",
-        otherGroupTokensText: "Total tokens of <b id='otherGroup'>&nbsp;</b> group: ",
+        groupTokensText: "Total correct answers of your <b id='group'>&nbsp;</b> group: ",
+        otherGroupTokensText: "Total correct answers of <b id='otherGroup'>&nbsp;</b> group: ",
         myTokensText: "Tokens you have contributed: ",
         // num1: Math.floor(Math.random()*(99-10)+10), // the nubmers are supplied by cb:
         // num2: Math.floor(Math.random()*(99-10)+10),

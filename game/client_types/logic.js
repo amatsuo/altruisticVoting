@@ -178,6 +178,18 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
       }
 
       console.log('Number addition results.');
+
+      var grouptokens = node.game.grouptokens;
+      var groupanswers = JSON.parse(JSON.stringify(grouptokens));
+      var winner;
+      if( grouptokens["Klee"] > grouptokens["Kandinsky"]) {
+        winner = "Klee";
+      } else if (grouptokens["Klee"] < grouptokens["Kandinsky"]) {
+        winner = "Kandinsky";
+      } else {
+        winner = shuffle(["Klee", "Kandinsky"])[0];
+      }
+      grouptokens[winner] += 10;
       //node.game.grouptokens = {"Klee": 0, "Kandinsky": 0};
       node.game.pl.each(function(p) {
         var res_group = node.game.kkgroup[p.id];
@@ -191,12 +203,15 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         }
 
         node.say('na_results', p.id,
-          [node.game.grouptokens[res_group],
-          node.game.grouptokens[other_group],
-          res_group,
-          other_group,
-          my_tokens
-         ]);
+        {myGroupTokens: grouptokens[res_group],
+          otherGroupTokens: grouptokens[other_group],
+          myGroup: res_group,
+          otherGroup: other_group,
+          my_tokens: my_tokens,
+          myGroupAnswers: groupanswers[res_group],
+          otherGroupAnswers: groupanswers[other_group],
+          winner: winner
+        });
       });
     }
   });

@@ -13,15 +13,34 @@ block mainContent
         td.risktab Your group 
           span#myGroup (Klee)
         td.risktab 
-          span#myGroupTokens 0
-          span  tokens
+          span#myGroupAnswers 0
+          span  answers
       tr
         td.risktab Other group 
           span#otherGroup (Kandinsky)
         td.risktab 
+          span#otherGroupAnswers 0
+          span  answers
+    br
+    div The winner of this round is
+      b#winnerGroup 
+    br
+    br
+    h2 Earnings
+    table(border='1px solid', width="50%", font-size="40%")
+      tr
+        td.risktab Your group 
+          span#myGroup2 (Klee)
+        td.risktab 
+          span#myGroupTokens 0
+          span  tokens
+      tr
+        td.risktab Other group 
+          span#otherGroup2 (Kandinsky)
+        td.risktab 
           span#otherGroupTokens 0
           span  tokens
-    br
+    
     br
     div When you finish reviewing the resutls, click "Go Next"
     #button(style='padding-top: 20px')
