@@ -48,8 +48,8 @@ module.exports = {
         instructions_VotingGame: 270000,
         kkpair_choice: 120000,
         kk_result: 60000,
-        votingGame: 60000,
-        votingResult: 60000,
+        votingGame: 40000,
+        votingResult: 30000,
         number_addition_game: 15000, //change
         number_addition_results: 60000,
         dict_game: 60000,
