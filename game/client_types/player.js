@@ -165,14 +165,23 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         W.setInnerHTML('num1', num1);
         W.setInnerHTML('num2', num2);
 
+        var myGroup = node.game.mygroup;
+        var otherGroup = "Klee";
+        if (myGroup == "Klee") {
+          otherGroup = "Kandinsky";
+        }
+
         //display group name
-        W.setInnerHTML('group', node.game.mygroup);
+        W.setInnerHTML('group', myGroup);
+        W.setInnerHTML('otherGroup', otherGroup);
 
         var b = W.getElementById('read');
         node.game.correct = 0;
 
         node.on.data('tokens_update', function(msg) {
-          W.setInnerHTML('totalMyGroup', msg.data);
+          console.log("%o", msg.data);
+          W.setInnerHTML('totalMyGroup', msg.data[myGroup]);
+          W.setInnerHTML('totalOtherGroup', msg.data[otherGroup]);
         });
 
         b.onclick = function() {
@@ -191,7 +200,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
           W.setInnerHTML('num2', num2);
 
           if(result === false){
-            console.log("validación Modal error");
+            //console.log("validación Modal error");
           }
           else{
             if(success){
@@ -204,7 +213,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
               W.getElementById('alertDanger').style.display = 'block';
               W.getElementById('alertSucces').style.display = 'none';
             }
-            W.getElementById('myTokens').innerHTML = node.game.correct;
+            //W.getElementById('myTokens').innerHTML = node.game.correct;
             //node.done();
 
           }

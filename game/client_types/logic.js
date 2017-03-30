@@ -155,9 +155,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         node.game.pl.each(function(p) {
           var res_group = node.game.kkgroup[p.id];
           //console.log("round_info: %o", messageData);
-          if(res_group == cgroup){
-            node.say('tokens_update', p.id, node.game.grouptokens[cgroup]);
-          }
+          node.say('tokens_update', p.id, node.game.grouptokens);
         });
       });
     }
