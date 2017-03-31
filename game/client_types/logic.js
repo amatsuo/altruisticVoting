@@ -206,6 +206,7 @@ module.exports = function(treatmentName, settings, stager, setup, gameRoom) {
         {myGroupTokens: grouptokens[res_group],
           otherGroupTokens: grouptokens[other_group],
           myGroup: res_group,
+          my_amount: grouptokens[res_group],
           otherGroup: other_group,
           my_tokens: my_tokens,
           myGroupAnswers: groupanswers[res_group],
