@@ -18,7 +18,7 @@ git clone https://github.com/amatsuo/altruisticVoting
 
 In order to connect the game securely with Qualtrics, this game hand encrypted codes which will be recovered through Qualtrics web-service. The code encryption is done through an node.js package called `crypt-js`. The set up of `crypt-js` and other files when I run this game on a [Linode](https://www.linode.com/) virtual private server is available as a bash script in this repostitory ([here](https://github.com/amatsuo/altruisticVoting/blob/master/other_files/linode_setup.sh)].
 
-### Contact
+## Contact
 If you have any questions, please contact me at mailto:a.matsuo@lse.ac.uk.
 
 
